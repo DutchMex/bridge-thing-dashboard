@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480" fill="none">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="800" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#13263E"/>
+      <stop offset=".55" stop-color="#091421"/>
+      <stop offset="1" stop-color="#17152B"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(270 0 0 210 187 97)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5DA8F9" stop-opacity=".27"/>
+      <stop offset="1" stop-color="#5DA8F9" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="glass" x1="50" y1="32" x2="520" y2="331" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF" stop-opacity=".15"/>
+      <stop offset="1" stop-color="#FFF" stop-opacity=".05"/>
+    </linearGradient>
+    <linearGradient id="playerGlass" x1="185" y1="347" x2="660" y2="456" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#FFF" stop-opacity=".05"/>
+    </linearGradient>
+    <linearGradient id="album" x1="38" y1="355" x2="120" y2="444" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5B882"/>
+      <stop offset=".52" stop-color="#BF7A9C"/>
+      <stop offset="1" stop-color="#597BB4"/>
+    </linearGradient>
+    <linearGradient id="modal" x1="178" y1="69" x2="619" y2="385" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#26384F" stop-opacity=".97"/>
+      <stop offset="1" stop-color="#151F30" stop-opacity=".97"/>
+    </linearGradient>
+    <style>
+      text { font-family: Inter, "Segoe UI", Arial, sans-serif; fill: #F7FBFF; }
+      .muted { fill: #D9E7F5; fill-opacity: .64; }
+      .fine { fill: #E5F0FC; fill-opacity: .54; }
+    </style>
+  </defs>
+  <path fill="url(#background)" d="M0 0h800v480H0z"/>
+  <path fill="url(#glow)" d="M0 0h800v480H0z"/>
+
+  <rect x="20.5" y="20.5" width="479" height="305" rx="34" fill="url(#glass)" stroke="#FFF" stroke-opacity=".12"/>
+  <rect x="516.5" y="20.5" width="263" height="305" rx="34" fill="url(#glass)" stroke="#FFF" stroke-opacity=".12"/>
+  <rect x="20.5" y="341.5" width="759" height="118" rx="30" fill="url(#playerGlass)" stroke="#FFF" stroke-opacity=".12"/>
+
+  <text x="260" y="160" text-anchor="middle" font-size="112" font-weight="600" letter-spacing="-8" fill-opacity=".58">09:41</text>
+  <text x="260" y="204" text-anchor="middle" class="muted" font-size="17" letter-spacing="1.7">TUESDAY, NOVEMBER 25</text>
+  <path d="M542 48h4l3-5 3 10 4-7 3 2h5" stroke="#A7D4FF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="568" y="52" font-size="13" font-weight="550">Amsterdam</text>
+  <path d="M557 87c10-15 33-14 40 2a14 14 0 0 1-1 27h-43a12 12 0 0 1 4-29Z" fill="#D9ECFF" fill-opacity=".18" stroke="#D9ECFF" stroke-opacity=".88" stroke-width="2"/>
+  <text x="610" y="108" font-size="40" font-weight="590" letter-spacing="-2">1°</text>
+  <text x="612" y="132" class="muted" font-size="12">Overcast</text>
+  <text x="548" y="191" class="fine" font-size="9" letter-spacing="1">HIGH</text>
+  <text x="548" y="210" font-size="15" font-weight="560">3°C</text>
+  <text x="655" y="191" class="fine" font-size="9" letter-spacing="1">LOW</text>
+  <text x="655" y="210" font-size="15" font-weight="560">0°C</text>
+  <text x="548" y="260" class="fine" font-size="9" letter-spacing=".7">SUNRISE · 08:18</text>
+  <text x="548" y="286" class="fine" font-size="10">82% humidity</text>
+  <rect x="35" y="356" width="87" height="87" rx="22" fill="url(#album)"/>
+  <circle cx="78.5" cy="399.5" r="27" fill="#29223D" fill-opacity=".38"/>
+  <circle cx="78.5" cy="399.5" r="18" stroke="#FFE7CE" stroke-opacity=".78" stroke-width="1.4"/>
+  <circle cx="78.5" cy="399.5" r="5" fill="#FFE7CE"/>
+  <text x="148" y="390" font-size="20" font-weight="600">Roar</text>
+  <text x="148" y="414" class="muted" font-size="15">Fileas Aunad</text>
+  <rect x="148" y="432" width="425" height="4" rx="2" fill="#FFF" fill-opacity=".12"/>
+  <rect x="148" y="432" width="174" height="4" rx="2" fill="#E4F1FF" fill-opacity=".7"/>
+  <g stroke="#FFF" stroke-opacity=".62" stroke-width="1.7" stroke-linecap="round">
+    <circle cx="632" cy="401" r="22" fill="#FFF" fill-opacity=".04" stroke-opacity=".09"/>
+    <path d="M638 394v14M626 394v14"/>
+    <circle cx="694" cy="401" r="29" fill="#EAF4FF" fill-opacity=".1" stroke-opacity=".12"/>
+    <path d="m687 391 15 10-15 10z" fill="#F7FBFF" stroke="none"/>
+    <circle cx="756" cy="401" r="22" fill="#FFF" fill-opacity=".04" stroke-opacity=".09"/>
+    <path d="M750 394v14M750 401l12-8v16z"/>
+  </g>
+
+  <path d="M0 0h800v480H0z" fill="#040A12" fill-opacity=".43"/>
+  <rect x="140.5" y="50.5" width="519" height="379" rx="28" fill="url(#modal)" stroke="#FFF" stroke-opacity=".2"/>
+  <rect x="156.5" y="67.5" width="487" height="54" rx="18" fill="#FFF" fill-opacity=".065" stroke="#FFF" stroke-opacity=".12"/>
+  <g stroke="#DDEBFA" stroke-opacity=".82" stroke-width="1.8" stroke-linecap="round">
+    <circle cx="181" cy="92" r="7" />
+    <path d="m186 97 5 5"/>
+  </g>
+  <text x="207" y="99" font-size="17">Copenhagen</text>
+  <text x="587" y="99" text-anchor="end" class="fine" font-size="12">Searching…</text>
+  <text x="161" y="143" class="fine" font-size="12.5">City searches and forecast coordinates are sent to Open-Meteo.</text>
+
+  <g>
+    <path d="M157 161.5h486" stroke="#FFF" stroke-opacity=".08"/>
+    <text x="171" y="190" font-size="15">Copenhagen</text>
+    <text x="628" y="190" text-anchor="end" class="fine" font-size="12">Capital Region, Denmark</text>
+    <path d="M157 205.5h486" stroke="#FFF" stroke-opacity=".08"/>
+    <text x="171" y="234" font-size="15">Copenhagen</text>
+    <text x="628" y="234" text-anchor="end" class="fine" font-size="12">Central Jutland, Denmark</text>
+    <path d="M157 249.5h486" stroke="#FFF" stroke-opacity=".08"/>
+    <text x="171" y="278" font-size="15">Copenhagen</text>
+    <text x="628" y="278" text-anchor="end" class="fine" font-size="12">North Denmark, Denmark</text>
+    <path d="M157 293.5h486" stroke="#FFF" stroke-opacity=".08"/>
+  </g>
+  <rect x="344" y="386" width="112" height="31" rx="12" fill="#FFF" fill-opacity=".085" stroke="#FFF" stroke-opacity=".15"/>
+  <text x="400" y="407" text-anchor="middle" font-size="14">Done</text>
+</svg>

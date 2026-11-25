@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480" fill="none">
+  <defs>
+    <linearGradient id="background" x1="20" y1="0" x2="760" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#152943"/>
+      <stop offset=".54" stop-color="#091421"/>
+      <stop offset="1" stop-color="#17152C"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(300 0 0 230 227 131)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#61AFFF" stop-opacity=".25"/>
+      <stop offset="1" stop-color="#61AFFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pink" cx="0" cy="0" r="1" gradientTransform="matrix(185 0 0 160 800 45)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D08CFF" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#D08CFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="glass" x1="80" y1="37" x2="486" y2="330" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#FFF" stop-opacity=".05"/>
+    </linearGradient>
+    <linearGradient id="playerGlass" x1="180" y1="345" x2="680" y2="460" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF" stop-opacity=".15"/>
+      <stop offset="1" stop-color="#FFF" stop-opacity=".05"/>
+    </linearGradient>
+    <linearGradient id="disc" x1="38" y1="357" x2="120" y2="440" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#98B8FF"/>
+      <stop offset=".52" stop-color="#A47DC5"/>
+      <stop offset="1" stop-color="#E9A3AF"/>
+    </linearGradient>
+    <style>
+      text { font-family: Inter, "Segoe UI", Arial, sans-serif; fill: #F7FBFF; }
+      .muted { fill: #D9E7F5; fill-opacity: .64; }
+      .fine { fill: #E5F0FC; fill-opacity: .54; }
+    </style>
+  </defs>
+  <path fill="url(#background)" d="M0 0h800v480H0z"/>
+  <path fill="url(#glow)" d="M0 0h800v480H0z"/>
+  <path fill="url(#pink)" d="M0 0h800v480H0z"/>
+
+  <rect x="20.5" y="20.5" width="495" height="305" rx="34" fill="url(#glass)" stroke="#FFF" stroke-opacity=".15"/>
+  <rect x="531.5" y="20.5" width="248" height="305" rx="34" fill="url(#glass)" stroke="#FFF" stroke-opacity=".15"/>
+  <rect x="20.5" y="341.5" width="759" height="118" rx="30" fill="url(#playerGlass)" stroke="#FFF" stroke-opacity=".15"/>
+
+  <g>
+    <text x="54" y="61" class="fine" font-size="12" letter-spacing="1.5">AMSTERDAM · CURRENT CONDITIONS</text>
+    <circle cx="130" cy="139" r="58" fill="#A8D8FF" fill-opacity=".08"/>
+    <path d="M91 141c9-15 33-14 40 2a14 14 0 0 1-1 27H87a12 12 0 0 1 4-29Z" fill="#D9ECFF" fill-opacity=".18" stroke="#D9ECFF" stroke-opacity=".88" stroke-width="2"/>
+    <text x="198" y="146" font-size="70" font-weight="560" letter-spacing="-5">1°</text>
+    <text x="202" y="174" class="muted" font-size="17">Overcast</text>
+    <path d="M54 210h427" stroke="#FFF" stroke-opacity=".12"/>
+    <text x="59" y="237" class="fine" font-size="9" letter-spacing="1">HIGH</text>
+    <text x="59" y="258" font-size="16" font-weight="560">3°C</text>
+    <text x="160" y="237" class="fine" font-size="9" letter-spacing="1">LOW</text>
+    <text x="160" y="258" font-size="16" font-weight="560">0°C</text>
+    <text x="265" y="237" class="fine" font-size="9" letter-spacing="1">SUNRISE</text>
+    <text x="265" y="258" font-size="16" font-weight="560">08:18</text>
+    <text x="375" y="237" class="fine" font-size="9" letter-spacing="1">SUNSET</text>
+    <text x="375" y="258" font-size="16" font-weight="560">16:35</text>
+    <text x="54" y="297" class="fine" font-size="12">82% humidity</text>
+    <text x="481" y="297" text-anchor="end" class="fine" font-size="12">Tap to change city</text>
+  </g>
+
+  <g stroke="#FFF" stroke-opacity=".42" stroke-width="1">
+    <circle cx="655" cy="173" r="91" fill="#FFF" fill-opacity=".018"/>
+    <path d="M655 92v11M655 243v11M574 173h11M725 173h11"/>
+    <path d="m598 116 8 8m98 98 8 8m0-114-8 8m-98 98-8 8"/>
+  </g>
+  <g stroke="#F0F7FF" stroke-linecap="round">
+    <path d="M655 173v-42" stroke-width="8"/>
+    <path d="M655 173l34 18" stroke-width="5"/>
+    <path d="M655 173v-74" stroke="#8DCAFF" stroke-width="2"/>
+  </g>
+  <circle cx="655" cy="173" r="4" fill="#8DCAFF"/>
+  <text x="655" y="289" text-anchor="middle" class="muted" font-size="14" letter-spacing="1.5">ANALOG · 09:41</text>
+
+  <rect x="35" y="356" width="87" height="87" rx="22" fill="url(#disc)"/>
+  <circle cx="78.5" cy="399.5" r="27" fill="#252641" fill-opacity=".36"/>
+  <circle cx="78.5" cy="399.5" r="18" stroke="#E8E9FF" stroke-opacity=".86" stroke-width="1.4"/>
+  <circle cx="78.5" cy="399.5" r="5" fill="#E8E9FF"/>
+  <path d="M47 425c14-25 43-38 69-37" stroke="#FFF" stroke-opacity=".38" stroke-width="1.4"/>
+
+  <text x="148" y="390" font-size="20" font-weight="600">Open Eye Signal</text>
+  <text x="148" y="414" class="muted" font-size="15">Jon Hopkins</text>
+  <rect x="148" y="432" width="425" height="4" rx="2" fill="#FFF" fill-opacity=".12"/>
+  <rect x="148" y="432" width="248" height="4" rx="2" fill="#E4F1FF" fill-opacity=".88"/>
+
+  <g stroke="#FFF" stroke-opacity=".82" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="632" cy="401" r="22" fill="#FFF" fill-opacity=".055" stroke-opacity=".13"/>
+    <path d="M638 394v14M626 394v14"/>
+    <circle cx="694" cy="401" r="29" fill="#EAF4FF" fill-opacity=".16" stroke-opacity=".22"/>
+    <path d="m687 391 15 10-15 10z" fill="#F7FBFF" stroke="none"/>
+    <circle cx="756" cy="401" r="22" fill="#FFF" fill-opacity=".055" stroke-opacity=".13"/>
+    <path d="M750 394v14M750 401l12-8v16z"/>
+  </g>
+</svg>

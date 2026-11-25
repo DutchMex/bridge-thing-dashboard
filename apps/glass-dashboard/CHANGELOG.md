@@ -5,6 +5,9 @@
 - Fix weather requests and add automatic city suggestions while typing.
 - Show Soundtrack monitoring whenever it is configured.
 - Publish widget layout and display settings for desktop app configuration.
+- Show current conditions, daily high/low, humidity, sunrise, and sunset.
+- Read Soundtrack tracks from its Now Playing GraphQL API.
+- Add city lookup to the Desktop settings page.
 
 ## 0.1.0
 

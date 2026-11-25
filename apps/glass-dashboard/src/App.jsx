@@ -11,6 +11,11 @@ function Icon({ name, size = 20 }) {
     play: <path d="m8 5 11 7-11 7z" />,
     search: <><circle cx="10.5" cy="10.5" r="5.5" /><path d="m15 15 4 4" /></>,
     location: <><path d="M12 21s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Z" /><circle cx="12" cy="9" r="2" /></>,
+    high: <path d="M12 19V5m-6 6 6-6 6 6" />,
+    low: <path d="M12 5v14m6-6-6 6-6-6" />,
+    sunrise: <><path d="M3 19h18M5 15a7 7 0 0 1 14 0M12 3v4M5.6 7.6l2.2 2.2m10.6-2.2-2.2 2.2" /><path d="M12 12v4" /></>,
+    sunset: <><path d="M3 19h18M5 15a7 7 0 0 1 14 0M12 5v4M5.6 7.6l2.2 2.2m10.6-2.2-2.2 2.2" /><path d="M12 12v4" /></>,
+    humidity: <><path d="M12 22a7 7 0 0 0 7-7c0-4-7-13-7-13S5 11 5 15a7 7 0 0 0 7 7Z" /><path d="M9 16a3 3 0 0 0 3 3" /></>,
   };
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill={name === 'play' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -20,14 +25,47 @@ function Icon({ name, size = 20 }) {
 }
 
 function weatherIcon(code) {
-  if (code === 0) return '☀';
-  if (code <= 2) return '🌤';
-  if (code === 3) return '☁';
-  if (code >= 45 && code <= 48) return '≋';
-  if (code >= 51 && code <= 67) return '☂';
-  if (code >= 71 && code <= 77) return '❄';
-  if (code >= 80) return '☔';
-  return '◌';
+  if (code === 0) return 'sun';
+  if (code <= 2) return 'partly-cloudy';
+  if (code === 3) return 'cloud';
+  if (code >= 45 && code <= 48) return 'fog';
+  if (code >= 51 && code <= 67) return 'rain';
+  if (code >= 71 && code <= 77) return 'snow';
+  if (code >= 80 && code <= 82) return 'rain';
+  if (code >= 85 && code <= 86) return 'snow';
+  if (code >= 95) return 'storm';
+  return 'cloud';
+}
+
+function weatherDescription(code, isDay) {
+  if (code === 0) return isDay ? 'Clear skies' : 'Clear night';
+  if (code === 1) return 'Mostly clear';
+  if (code === 2) return 'Partly cloudy';
+  if (code === 3) return 'Overcast';
+  if (code === 45 || code === 48) return 'Foggy';
+  if (code >= 51 && code <= 57) return 'Drizzle';
+  if (code >= 61 && code <= 67) return 'Rain';
+  if (code >= 71 && code <= 77) return 'Snow';
+  if (code >= 80 && code <= 82) return 'Rain showers';
+  if (code >= 85 && code <= 86) return 'Snow showers';
+  if (code >= 95) return 'Thunderstorms';
+  return 'Current conditions';
+}
+
+function WeatherSymbol({ code, isDay }) {
+  const symbol = !isDay && code === 0 ? 'night' : weatherIcon(code);
+  return (
+    <svg className={`weather-symbol weather-symbol-${symbol}`} viewBox="0 0 64 64" aria-hidden="true">
+      {symbol === 'sun' && <><circle cx="32" cy="32" r="12" /><path d="M32 5v8m0 38v8M5 32h8m38 0h8M13 13l6 6m26 26 6 6m0-38-6 6m-26 26-6 6" /></>}
+      {symbol === 'night' && <path d="M43 12a22 22 0 1 0 9 39 24 24 0 0 1-9-39Z" />}
+      {symbol === 'partly-cloudy' && <><circle cx="23" cy="22" r="10" /><path d="M23 5v5m0 24v4M6 22h5m24 0h4m-28-12 4 4m16 16 4 4m0-24-4 4m-16 16-4 4" /><path d="M18 47h29a10 10 0 0 0 0-20 14 14 0 0 0-27-1 11 11 0 0 0-2 21Z" /></>}
+      {symbol === 'cloud' && <path d="M16 48h32a11 11 0 0 0 0-22 15 15 0 0 0-29-2 12 12 0 0 0-3 24Z" />}
+      {symbol === 'fog' && <><path d="M18 35h28a9 9 0 0 0 0-18 13 13 0 0 0-25-2 10 10 0 0 0-3 20Z" /><path d="M9 43h46M14 51h36" /></>}
+      {symbol === 'rain' && <><path d="M16 39h32a11 11 0 0 0 0-22 15 15 0 0 0-29-2 12 12 0 0 0-3 24Z" /><path d="m22 46-3 7m16-7-3 7m16-7-3 7" /></>}
+      {symbol === 'snow' && <><path d="M16 37h32a11 11 0 0 0 0-22 15 15 0 0 0-29-2 12 12 0 0 0-3 24Z" /><path d="M22 44v10m-4-7 8 4m0-8-8 4m20-3v10m-4-7 8 4m0-8-8 4" /></>}
+      {symbol === 'storm' && <><path d="M16 37h32a11 11 0 0 0 0-22 15 15 0 0 0-29-2 12 12 0 0 0-3 24Z" /><path d="m35 40-9 12h8l-3 9 11-14h-8l4-7" /></>}
+    </svg>
+  );
 }
 
 function clockText(date) {
@@ -121,34 +159,59 @@ function Clock({ face }) {
   );
 }
 
-async function netFetch(url, { redirect = 'follow', allowBrowserFallback = true } = {}) {
+async function netFetch(url, { method = 'GET', body = null, redirect = 'follow', allowBrowserFallback = true } = {}) {
+  const headers = body === null ? [] : [{ name: 'Content-Type', value: 'application/json' }];
+  const requestBody = body === null ? null : new TextEncoder().encode(JSON.stringify(body));
   let result;
   try {
     result = await client.net.fetch({
-      request: { url, method: 'GET', headers: [], body: null, timeoutMs: 15000, redirect },
+      request: { url, method, headers, body: requestBody, timeoutMs: 15000, redirect },
     });
   } catch (error) {
     if (!allowBrowserFallback) throw error;
   }
   if (result?.ok) {
     const { status, body } = result.response.response;
-    if (status < 200 || status >= 300) throw new Error(`Request failed: ${status}`);
-    const bytes = body;
-    return JSON.parse(new TextDecoder().decode(bytes));
+    if (status >= 200 && status < 300) {
+      return JSON.parse(new TextDecoder().decode(body));
+    }
+    if (!allowBrowserFallback) throw new Error(`Request failed: ${status}`);
   }
   if (!allowBrowserFallback) throw new Error('Request was rejected by the host network service');
-  const response = await fetch(url, { redirect });
+  const response = await fetch(url, {
+    method,
+    headers: Object.fromEntries(headers.map(({ name, value }) => [name, value])),
+    body: requestBody ? new TextDecoder().decode(requestBody) : undefined,
+    redirect,
+  });
   if (!response.ok) throw new Error(`Request failed: ${response.status}`);
   return response.json();
 }
 
-function parseSoundtrackUrl(value) {
+function parseSoundtrackZone(value) {
   const url = new URL(value);
-  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) {
-    throw new Error('Use an HTTP(S) URL without embedded credentials.');
+  const path = url.pathname.split('/').filter(Boolean);
+  if (url.protocol !== 'https:' || url.hostname !== 'display.soundtrackyourbrand.com' || url.username || url.password || path.length !== 1) {
+    throw new Error('Use a Soundtrack display URL such as https://display.soundtrackyourbrand.com/BEEPLE.');
   }
-  return url.href;
+  const zone = path[0].replace(/[^a-z0-9]/gi, '').toUpperCase();
+  if (!zone) throw new Error('The Soundtrack display URL must include a zone name.');
+  return zone;
 }
+
+const SOUNDTRACK_API_URL = 'https://api.soundtrackyourbrand.com/v2';
+const SOUNDTRACK_QUERY = `
+  query NowPlayingInitial($zone: ID!) {
+    nowPlaying(soundZone: $zone) {
+      track(market: US) {
+        name
+        artists {
+          name
+        }
+      }
+    }
+  }
+`;
 
 function Weather({ unit, location, sharingEnabled, onSearch }) {
   const [weather, setWeather] = useState(null);
@@ -174,7 +237,7 @@ function Weather({ unit, location, sharingEnabled, onSearch }) {
         }
         if (!place) throw new Error('Location not found');
         const tempUnit = unit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
-        const data = await netFetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,relative_humidity_2m,is_day,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&temperature_unit=${tempUnit}`);
+        const data = await netFetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,relative_humidity_2m,is_day,weather_code&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto&temperature_unit=${tempUnit}`);
         if (!data.current) throw new Error('Weather forecast is unavailable');
         if (!cancelled) {
           setWeather({ ...data, placeName: place.name || place.admin1 || location });
@@ -196,17 +259,55 @@ function Weather({ unit, location, sharingEnabled, onSearch }) {
 
   const temperature = weather?.current?.temperature_2m;
   const code = weather?.current?.weather_code;
-  const symbol = unit === 'fahrenheit' ? '°F' : '°C';
+  const temperatureSymbol = unit === 'fahrenheit' ? '°F' : '°C';
+  const isDay = weather?.current?.is_day !== 0;
+  const today = weather?.daily;
+  const placeName = weather?.placeName || location.split(',')[0];
+  const condition = weather
+    ? weatherDescription(code, isDay)
+    : loading
+      ? 'Updating forecast'
+      : sharingEnabled
+        ? error || 'Weather unavailable'
+        : 'Weather sharing is off';
+  const temperatureValue = temperature != null ? `${Math.round(temperature)}°` : '--°';
+  const formatLocalTime = (value) => value?.split('T')[1]?.slice(0, 5) || '--:--';
   return (
-    <button className="weather glass" onClick={onSearch} type="button" aria-label="Change weather location">
-      <div className="weather-main">
-        <span className="weather-icon">{weather ? weatherIcon(code) : '—'}</span>
-        <div>
-          <strong>{loading ? '…' : temperature != null ? `${Math.round(temperature)}${symbol}` : '--'}</strong>
-          <span>{weather?.placeName || (sharingEnabled ? error || 'Weather' : 'Weather sharing is off')}</span>
+    <button className="weather glass" onClick={onSearch} type="button" aria-label={`Weather in ${placeName}. ${condition}. ${temperatureValue}${temperatureSymbol}. Change location.`}>
+      <div className="weather-heading">
+        <span className="weather-place"><Icon name="location" size={14} />{placeName}</span>
+        <span className="weather-live"><i />NOW</span>
+      </div>
+      <div className="weather-current">
+        <div className="weather-symbol-wrap"><WeatherSymbol code={code} isDay={isDay} /></div>
+        <div className="weather-temperature">
+          <strong>{temperatureValue}</strong>
+          <span className="weather-unit">{temperatureSymbol.replace('°', '')}</span>
+          <span className="weather-description">{condition}</span>
         </div>
       </div>
-      <div className="weather-detail"><Icon name="location" size={15} /> <span>{weather ? `${weather.current?.relative_humidity_2m ?? '--'}% humidity` : sharingEnabled ? 'Tap to search' : 'Enable weather sharing in settings'}</span></div>
+      <div className="weather-stats">
+        <div className="weather-stat">
+          <Icon name="high" size={15} />
+          <div><span>HIGH</span><strong>{today?.temperature_2m_max?.[0] != null ? `${Math.round(today.temperature_2m_max[0])}°` : '--°'}</strong></div>
+        </div>
+        <div className="weather-stat">
+          <Icon name="low" size={15} />
+          <div><span>LOW</span><strong>{today?.temperature_2m_min?.[0] != null ? `${Math.round(today.temperature_2m_min[0])}°` : '--°'}</strong></div>
+        </div>
+        <div className="weather-stat">
+          <Icon name="sunrise" size={15} />
+          <div><span>SUNRISE</span><strong>{formatLocalTime(today?.sunrise?.[0])}</strong></div>
+        </div>
+        <div className="weather-stat">
+          <Icon name="sunset" size={15} />
+          <div><span>SUNSET</span><strong>{formatLocalTime(today?.sunset?.[0])}</strong></div>
+        </div>
+      </div>
+      <div className="weather-footer">
+        <span><Icon name="humidity" size={14} />{weather?.current?.relative_humidity_2m ?? '--'}% humidity</span>
+        <span>{weather ? 'Tap to change city' : sharingEnabled ? 'Tap to retry' : 'Enable sharing in settings'}</span>
+      </div>
     </button>
   );
 }
@@ -348,7 +449,7 @@ export default function App() {
   const [alwaysPlayer, setAlwaysPlayer] = useState(false);
   const [playerState, setPlayerState] = useState(null);
   const [soundtrackEnabled, setSoundtrackEnabled] = useState(false);
-  const [soundtrackUrl, setSoundtrackUrl] = useState('');
+  const [soundtrackUrl, setSoundtrackUrl] = useState('https://display.soundtrackyourbrand.com/BEEPLE');
   const [soundtrackTrack, setSoundtrackTrack] = useState(null);
   const [soundtrackError, setSoundtrackError] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
@@ -376,7 +477,7 @@ export default function App() {
       if (Object.hasOwn(entries, 'weatherSharingEnabled')) setWeatherSharingEnabled(entries.weatherSharingEnabled === 'true' || entries.weatherSharingEnabled === true);
       if (entries.alwaysShowPlayback) setAlwaysPlayer(entries.alwaysShowPlayback === 'true');
       if (entries.soundtrackEnabled) setSoundtrackEnabled(entries.soundtrackEnabled === 'true');
-      if (entries.soundtrackUrl) setSoundtrackUrl(entries.soundtrackUrl);
+      if (Object.hasOwn(entries, 'soundtrackUrl')) setSoundtrackUrl(entries.soundtrackUrl);
     }
     readConfig();
     const offConfig = client.config.onChanged(({ key, value }) => {
@@ -406,9 +507,9 @@ export default function App() {
       setSoundtrackError('');
       return;
     }
-    let endpoint;
+    let zone;
     try {
-      endpoint = parseSoundtrackUrl(soundtrackUrl.trim());
+      zone = parseSoundtrackZone(soundtrackUrl.trim());
     } catch (error) {
       setSoundtrackTrack(null);
       setSoundtrackError(error.message);
@@ -416,32 +517,39 @@ export default function App() {
     }
 
     let cancelled = false;
+    let timer;
     async function poll() {
       try {
-        const data = await netFetch(endpoint, { redirect: 'error', allowBrowserFallback: false });
+        const data = await netFetch(SOUNDTRACK_API_URL, {
+          method: 'POST',
+          body: { query: SOUNDTRACK_QUERY, variables: { zone } },
+          redirect: 'error',
+        });
         if (cancelled) return;
-        const item = data?.track || data?.currentTrack || data?.nowPlaying || data?.now_playing || data;
-        const title = item?.title || item?.name || item?.song || item?.trackName;
-        const artist = item?.artist || item?.artistName || item?.author;
-        if (title || artist) {
+        if (Array.isArray(data.errors) && data.errors.length) {
+          throw new Error(data.errors.map(({ message }) => message).filter(Boolean).join('; ') || 'Soundtrack returned a GraphQL error.');
+        }
+        const track = data?.data?.nowPlaying?.track;
+        if (track?.name || track?.artists?.length) {
           setSoundtrackTrack({
-            title: title || 'Unknown track',
-            artist: artist || 'Unknown artist',
+            title: track.name || 'Unknown track',
+            artist: track.artists?.map(({ name }) => name).filter(Boolean).join(', ') || 'Unknown artist',
           });
         } else {
           setSoundtrackTrack(null);
         }
         setSoundtrackError('');
-      } catch {
+      } catch (error) {
         if (!cancelled) {
           setSoundtrackTrack(null);
-          setSoundtrackError('Soundtrack status unavailable. Check the URL and host permissions.');
+          setSoundtrackError(`Soundtrack status unavailable: ${error instanceof Error ? error.message : String(error)}`);
         }
+      } finally {
+        if (!cancelled) timer = window.setTimeout(poll, 5000);
       }
     }
     poll();
-    const timer = window.setInterval(poll, 5000);
-    return () => { cancelled = true; window.clearInterval(timer); };
+    return () => { cancelled = true; window.clearTimeout(timer); };
   }, [soundtrackEnabled, soundtrackUrl]);
 
   async function playbackAction(action) {
@@ -453,8 +561,10 @@ export default function App() {
 
   const soundtrackConfigured = soundtrackEnabled && Boolean(soundtrackUrl.trim());
   const showPlayer = showPlayback && (alwaysPlayer || playerState?.playback?.state === 'playing' || Boolean(soundtrackTrack) || soundtrackConfigured);
-  const displayPlayerState = soundtrackTrack
-    ? { ...playerState, track: soundtrackTrack, playback: { state: 'playing', positionMs: 0 } }
+  const displayPlayerState = soundtrackConfigured
+    ? soundtrackTrack
+      ? { ...playerState, track: soundtrackTrack, playback: { state: 'playing', positionMs: 0 } }
+      : null
     : playerState;
 
   return (

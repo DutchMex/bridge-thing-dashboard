@@ -5,6 +5,7 @@
   "description": "A liquid-glass dashboard with clock, weather and playback.",
   "categories": ["dashboards", "clocks-weather"],
   "permissions": ["net.fetch"],
+  "settings": "settings/index.html",
   "art": {
     "heroPx": 248,
     "thumbPx": 96
@@ -159,7 +160,7 @@
       "data": {
         "key": "weatherLocation",
         "label": "Weather location",
-        "description": "City name; shared with Open-Meteo only when weather data sharing is enabled",
+        "description": "Choose a city in the dashboard or Desktop settings. Its name and forecast coordinates are shared with Open-Meteo only when weather data sharing is enabled.",
         "pattern": null,
         "minLength": null,
         "maxLength": null,
@@ -188,12 +189,12 @@
       "type": "string",
       "data": {
         "key": "soundtrackUrl",
-        "label": "Soundtrack status URL",
-        "description": "Optional HTTP(S) endpoint for your own Soundtrack instance. Requests are sent to this URL.",
+        "label": "Soundtrack display URL",
+        "description": "Soundtrack Now Playing page URL, such as https://display.soundtrackyourbrand.com/BEEPLE. Its zone name is used to fetch the current track.",
         "pattern": null,
         "minLength": null,
         "maxLength": null,
-        "default": ""
+        "default": "https://display.soundtrackyourbrand.com/BEEPLE"
       }
     }
   ]
