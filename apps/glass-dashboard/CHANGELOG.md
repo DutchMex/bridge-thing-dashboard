@@ -1,5 +1,10 @@
 # Glass Dashboard
 
+## 0.1.4
+
+- Fetch Soundtrack cover art through BridgeThing's network service.
+- Give large and weather-focus layouts more room for weather details.
+
 ## 0.1.3
 
 - Add selectable gradient and solid background themes.

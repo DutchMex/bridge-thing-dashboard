@@ -218,7 +218,7 @@ const SOUNDTRACK_QUERY = `
   }
 `;
 
-function Weather({ unit, location, sharingEnabled, onSearch }) {
+function Weather({ unit, location, sharingEnabled, onSearch, showExtremesBeside }) {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -277,8 +277,18 @@ function Weather({ unit, location, sharingEnabled, onSearch }) {
         : 'Weather sharing is off';
   const temperatureValue = temperature != null ? `${Math.round(temperature)}°` : '--°';
   const formatLocalTime = (value) => value?.split('T')[1]?.slice(0, 5) || '--:--';
+  const highLowStats = <>
+    <div className="weather-stat">
+      <Icon name="high" size={15} />
+      <div><span>HIGH</span><strong>{today?.temperature_2m_max?.[0] != null ? `${Math.round(today.temperature_2m_max[0])}°` : '--°'}</strong></div>
+    </div>
+    <div className="weather-stat">
+      <Icon name="low" size={15} />
+      <div><span>LOW</span><strong>{today?.temperature_2m_min?.[0] != null ? `${Math.round(today.temperature_2m_min[0])}°` : '--°'}</strong></div>
+    </div>
+  </>;
   return (
-    <button className="weather glass" onClick={onSearch} type="button" aria-label={`Weather in ${placeName}. ${condition}. ${temperatureValue}${temperatureSymbol}. Change location.`}>
+    <button className="weather glass" data-extremes={showExtremesBeside ? 'beside' : 'stacked'} onClick={onSearch} type="button" aria-label={`Weather in ${placeName}. ${condition}. ${temperatureValue}${temperatureSymbol}. Change location.`}>
       <div className="weather-heading">
         <span className="weather-place"><Icon name="location" size={14} />{placeName}</span>
         <span className="weather-live"><i />NOW</span>
@@ -290,16 +300,10 @@ function Weather({ unit, location, sharingEnabled, onSearch }) {
           <span className="weather-unit">{temperatureSymbol.replace('°', '')}</span>
           <span className="weather-description">{condition}</span>
         </div>
+        {showExtremesBeside && <div className="weather-extremes">{highLowStats}</div>}
       </div>
       <div className="weather-stats">
-        <div className="weather-stat">
-          <Icon name="high" size={15} />
-          <div><span>HIGH</span><strong>{today?.temperature_2m_max?.[0] != null ? `${Math.round(today.temperature_2m_max[0])}°` : '--°'}</strong></div>
-        </div>
-        <div className="weather-stat">
-          <Icon name="low" size={15} />
-          <div><span>LOW</span><strong>{today?.temperature_2m_min?.[0] != null ? `${Math.round(today.temperature_2m_min[0])}°` : '--°'}</strong></div>
-        </div>
+        {!showExtremesBeside && highLowStats}
         <div className="weather-stat">
           <Icon name="sunrise" size={15} />
           <div><span>SUNRISE</span><strong>{formatLocalTime(today?.sunrise?.[0])}</strong></div>
@@ -438,16 +442,70 @@ function Player({ state, onAction, sourceLabel }) {
 }
 
 function SoundtrackCard({ track }) {
+  const [coverUrl, setCoverUrl] = useState('');
+  const [coverError, setCoverError] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    let objectUrl = '';
+    setCoverUrl('');
+    setCoverError(false);
+
+    async function loadCover() {
+      if (!track?.artworkUrl) return;
+      const url = new URL(track.artworkUrl);
+      if (url.protocol !== 'https:' || url.hostname !== 'i.soundcdn.com' || url.username || url.password) {
+        throw new Error('Unexpected Soundtrack artwork URL.');
+      }
+
+      const result = await client.net.fetch({
+        request: {
+          url: url.href,
+          method: 'GET',
+          headers: [],
+          body: null,
+          timeoutMs: 15000,
+          redirect: 'error',
+        },
+      });
+      if (!result.ok) throw new Error('The host network service rejected the artwork request.');
+
+      const response = result.response.response;
+      const contentType = response.headers
+        .find(({ name }) => name.toLowerCase() === 'content-type')
+        ?.value;
+      if (response.status < 200 || response.status >= 300 || !contentType?.startsWith('image/')) {
+        throw new Error(`Unexpected artwork response: ${response.status} ${contentType || 'unknown content type'}.`);
+      }
+
+      objectUrl = URL.createObjectURL(new Blob([response.body], { type: contentType }));
+      if (active) setCoverUrl(objectUrl);
+    }
+
+    loadCover().catch((error) => {
+      if (active) {
+        setCoverError(true);
+        console.error('Soundtrack cover art unavailable:', error);
+      }
+    });
+
+    return () => {
+      active = false;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [track?.artworkUrl]);
+
   return (
     <div className="soundtrack-card glass">
-      <div className="soundtrack-cover" style={track?.artworkUrl ? { backgroundImage: `url("${track.artworkUrl}")` } : undefined} aria-hidden="true">
-        {!track?.artworkUrl && <span>♫</span>}
+      <div className="soundtrack-cover" style={coverUrl ? { backgroundImage: `url("${coverUrl}")` } : undefined} aria-hidden="true">
+        {!coverUrl && <span>♫</span>}
       </div>
       <div className="soundtrack-track">
         <div className="track-copy">
           <strong>{track?.title || 'Soundtrack'}</strong>
           <span>{track?.artist || 'Waiting for status update'}</span>
         </div>
+        {coverError && <span className="soundtrack-cover-error">Cover art unavailable</span>}
       </div>
       <span className="soundtrack-label">NOW PLAYING</span>
     </div>
@@ -599,7 +657,13 @@ export default function App() {
       <div className="ambient ambient-two" />
       {showClock && <section className="clock-panel glass" data-size={clockSize}><Clock face={clockFace} /></section>}
       {showWeather && <aside className="side-column" data-size={weatherSize}>
-        <Weather unit={unit} location={location} sharingEnabled={weatherSharingEnabled} onSearch={() => setSearchOpen(true)} />
+        <Weather
+          unit={unit}
+          location={location}
+          sharingEnabled={weatherSharingEnabled}
+          showExtremesBeside={weatherSize === 'large' || dashboardLayout === 'weather-focus'}
+          onSearch={() => setSearchOpen(true)}
+        />
       </aside>}
       {mediaCount > 0 && <section className="media-row" data-count={mediaCount}>
         {showPlayer && <div className="player-slot" data-size={playerSize}><Player state={playerState} onAction={playbackAction} sourceLabel="" /></div>}
