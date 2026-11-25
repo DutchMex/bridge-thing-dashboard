@@ -1,5 +1,10 @@
 # Glass Dashboard
 
+## 0.1.6
+
+- Add a configurable precision level for the fuzzy clock, from dayparts to five-minute phrases.
+- Match Soundtrack artwork spacing to the dashboard renders.
+
 ## 0.1.5
 
 - Refine weather and Soundtrack layouts across dashboard sizes.

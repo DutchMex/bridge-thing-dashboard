@@ -68,17 +68,44 @@ function WeatherSymbol({ code, isDay }) {
   );
 }
 
-function clockText(date) {
+function clockText(date, precision) {
   const hour = date.getHours();
-  if (hour < 5) return 'deep night';
-  if (hour < 8) return 'early morning';
-  if (hour < 12) return 'morning';
-  if (hour < 17) return 'afternoon';
-  if (hour < 21) return 'evening';
-  return 'night';
+  if (precision !== 'quarter-hour' && precision !== 'five-minute') {
+    if (hour < 5) return 'deep night';
+    if (hour < 8) return 'early morning';
+    if (hour < 12) return 'morning';
+    if (hour < 17) return 'afternoon';
+    if (hour < 21) return 'evening';
+    return 'night';
+  }
+
+  const interval = precision === 'quarter-hour' ? 15 : 5;
+
+  let roundedHour = hour;
+  let minute = Math.round(date.getMinutes() / interval) * interval;
+  if (minute === 60) {
+    roundedHour += 1;
+    minute = 0;
+  }
+  const hour12 = roundedHour % 12 || 12;
+  const nextHour = hour12 % 12 + 1;
+  if (minute === 0) return `${hour12} o'clock`;
+  if (minute === 15) return `quarter past ${hour12}`;
+  if (minute === 30) return `half past ${hour12}`;
+  if (minute === 45) return `quarter to ${nextHour}`;
+
+  const words = {
+    5: 'five',
+    10: 'ten',
+    20: 'twenty',
+    25: 'twenty-five',
+  };
+  return minute < 30
+    ? `${words[minute]} past ${hour12}`
+    : `${words[60 - minute]} to ${nextHour}`;
 }
 
-function Clock({ face }) {
+function Clock({ face, fuzzyClockPrecision }) {
   const [now, setNow] = useState(new Date());
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 1000);
@@ -148,7 +175,7 @@ function Clock({ face }) {
 
   if (face === 'fuzzy') {
     const time = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-    return <div className="fuzzy-clock"><span>it is</span><strong>{clockText(now)}</strong><em>{time}</em></div>;
+    return <div className="fuzzy-clock"><span>it is</span><strong>{clockText(now, fuzzyClockPrecision)}</strong><em>{time}</em></div>;
   }
 
   return (
@@ -523,6 +550,7 @@ function SoundtrackCard({ track }) {
 
 export default function App() {
   const [clockFace, setClockFace] = useState('digital');
+  const [fuzzyClockPrecision, setFuzzyClockPrecision] = useState('daypart');
   const [backgroundTheme, setBackgroundTheme] = useState('midnight');
   const [unit, setUnit] = useState('celsius');
   const [location, setLocation] = useState('Amsterdam');
@@ -554,6 +582,7 @@ export default function App() {
       if (!reply.ok) return;
       const entries = Object.fromEntries(reply.response.entries.map(({ key, value }) => [key, value]));
       if (entries.clockFace) setClockFace(entries.clockFace);
+      if (entries.fuzzyClockPrecision) setFuzzyClockPrecision(entries.fuzzyClockPrecision);
       if (entries.backgroundTheme) setBackgroundTheme(entries.backgroundTheme);
       if (entries.temperatureUnit) setUnit(entries.temperatureUnit);
       if (entries.weatherLocation) setLocation(entries.weatherLocation);
@@ -575,6 +604,7 @@ export default function App() {
     readConfig();
     const offConfig = client.config.onChanged(({ key, value }) => {
       if (key === 'clockFace') setClockFace(value || 'digital');
+      if (key === 'fuzzyClockPrecision') setFuzzyClockPrecision(value || 'daypart');
       if (key === 'backgroundTheme') setBackgroundTheme(value || 'midnight');
       if (key === 'temperatureUnit') setUnit(value || 'celsius');
       if (key === 'weatherLocation') setLocation(value || 'Amsterdam');
@@ -664,7 +694,7 @@ export default function App() {
     <main className="dashboard" data-layout={dashboardLayout} data-spacing={widgetSpacing} data-performance={lowPowerMode ? 'low' : 'full'} data-theme={backgroundTheme}>
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
-      {showClock && <section className="clock-panel glass" data-size={clockSize}><Clock face={clockFace} /></section>}
+      {showClock && <section className="clock-panel glass" data-size={clockSize}><Clock face={clockFace} fuzzyClockPrecision={fuzzyClockPrecision} /></section>}
       {showWeather && <aside className="side-column" data-size={weatherSize}>
         <Weather
           unit={unit}
