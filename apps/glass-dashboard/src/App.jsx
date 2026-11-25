@@ -277,7 +277,16 @@ function Weather({ unit, location, sharingEnabled, onSearch, showExtremesBeside 
         : 'Weather sharing is off';
   const temperatureValue = temperature != null ? `${Math.round(temperature)}°` : '--°';
   const formatLocalTime = (value) => value?.split('T')[1]?.slice(0, 5) || '--:--';
-  const highLowStats = <>
+  const highLowStats = showExtremesBeside ? <>
+    <div className="weather-stat weather-extreme">
+      <span>High:</span>
+      <strong>{today?.temperature_2m_max?.[0] != null ? `${Math.round(today.temperature_2m_max[0])}°` : '--°'}</strong>
+    </div>
+    <div className="weather-stat weather-extreme">
+      <span>Low:</span>
+      <strong>{today?.temperature_2m_min?.[0] != null ? `${Math.round(today.temperature_2m_min[0])}°` : '--°'}</strong>
+    </div>
+  </> : <>
     <div className="weather-stat">
       <Icon name="high" size={15} />
       <div><span>HIGH</span><strong>{today?.temperature_2m_max?.[0] != null ? `${Math.round(today.temperature_2m_max[0])}°` : '--°'}</strong></div>

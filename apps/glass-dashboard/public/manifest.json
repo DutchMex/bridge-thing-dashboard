@@ -1,7 +1,7 @@
 {
   "id": "0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301",
   "name": "Glass Dashboard",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A liquid-glass dashboard with clock, weather and playback.",
   "categories": [
     "dashboards",

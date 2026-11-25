@@ -1,5 +1,10 @@
 # Glass Dashboard
 
+## 0.1.5
+
+- Refine weather and Soundtrack layouts across dashboard sizes.
+- Showcase the fuzzy clock in the dashboard screenshots.
+
 ## 0.1.4
 
 - Fetch Soundtrack cover art through BridgeThing's network service.
