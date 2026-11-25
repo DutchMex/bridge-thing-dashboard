@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-11-25T21:38:43.467Z",
+  "updated_at": "2026-11-25T21:56:34.405Z",
   "repo": {
     "name": "Bridge-Thing Dashboard",
     "description": "Custom dashboards for BridgeThing devices.",
@@ -34,7 +34,7 @@
             "net.fetch"
           ],
           "min_libbridgething_version": "0.17.0",
-          "changelog": "- Fix weather requests and add automatic city suggestions while typing.\n- Show Soundtrack monitoring whenever it is configured.\n- Publish widget layout and display settings for desktop app configuration."
+          "changelog": "- Fix weather requests and add automatic city suggestions while typing.\n- Show Soundtrack monitoring whenever it is configured.\n- Publish widget layout and display settings for desktop app configuration.\n- Show current conditions, daily high/low, humidity, sunrise, and sunset.\n- Read Soundtrack tracks from its Now Playing GraphQL API.\n- Add city lookup to the Desktop settings page."
         },
         {
           "version": "0.1.0",
