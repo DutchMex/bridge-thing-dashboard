@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-11-25T22:35:57.775Z",
+  "updated_at": "2026-11-25T23:12:55.675Z",
   "repo": {
     "name": "Bridge-Thing Dashboard",
     "description": "Custom dashboards for BridgeThing devices.",
@@ -27,6 +27,25 @@
       "homepage": "https://github.com/DutchMex/bridge-thing-dashboard",
       "source": "https://github.com/DutchMex/bridge-thing-dashboard",
       "versions": [
+        {
+          "version": "0.1.6",
+          "released_at": "2026-11-25T23:12:55.656Z",
+          "download": {
+            "url": "https://dutchmex.github.io/bridge-thing-dashboard/r/0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301/0.1.6.zip",
+            "size": 471644,
+            "sha256": "ca3832212bb3ff65c6ceb49dfc9c7b808e49aeab56ba704c165f743c8414954e"
+          },
+          "settings": {
+            "url": "https://dutchmex.github.io/bridge-thing-dashboard/s/0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301/0.1.6.html",
+            "size": 252214,
+            "sha256": "668bfed6b5da287730ff91836394aa1ab1d904dddb0afca05cda1c76b916b8b8"
+          },
+          "permissions": [
+            "net.fetch"
+          ],
+          "min_libbridgething_version": "0.17.0",
+          "changelog": "- Add a configurable precision level for the fuzzy clock, from dayparts to five-minute phrases.\n- Match Soundtrack artwork spacing to the dashboard renders."
+        },
         {
           "version": "0.1.5",
           "released_at": "2026-11-25T22:35:57.761Z",
