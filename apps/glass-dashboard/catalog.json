@@ -1,0 +1,9 @@
+{
+  "author": "DutchMex",
+  "homepage": "https://github.com/DutchMex/bridge-thing-dashboard",
+  "source": "https://github.com/DutchMex/bridge-thing-dashboard",
+  "icon": null,
+  "screenshots": [],
+  "categories": ["dashboards", "clocks-weather"],
+  "min_libbridgething_version": "0.17.0"
+}

@@ -1,0 +1,80 @@
+{
+  "id": "0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301",
+  "name": "Glass Dashboard",
+  "version": "0.1.0",
+  "description": "A liquid-glass dashboard with clock, weather and playback.",
+  "author": "DutchMex",
+  "categories": ["dashboards", "clocks-weather"],
+  "permissions": ["net.fetch", "geo"],
+  "art": {
+    "heroPx": 248,
+    "thumbPx": 96
+  },
+  "config": [
+    {
+      "type": "enum",
+      "data": {
+        "key": "clockFace",
+        "label": "Clock face",
+        "choices": ["fuzzy", "binary", "analog", "digital", "pixel"],
+        "choiceLabels": {
+          "fuzzy": "Fuzzy",
+          "binary": "Binary",
+          "analog": "Analog",
+          "digital": "Digital",
+          "pixel": "Pixel"
+        },
+        "default": "digital"
+      }
+    },
+    {
+      "type": "enum",
+      "data": {
+        "key": "temperatureUnit",
+        "label": "Temperature",
+        "choices": ["celsius", "fahrenheit"],
+        "choiceLabels": {
+          "celsius": "Celsius",
+          "fahrenheit": "Fahrenheit"
+        },
+        "default": "celsius"
+      }
+    },
+    {
+      "type": "string",
+      "data": {
+        "key": "weatherLocation",
+        "label": "Weather location",
+        "description": "City name",
+        "default": "Amsterdam"
+      }
+    },
+    {
+      "type": "boolean",
+      "data": {
+        "key": "alwaysShowPlayback",
+        "label": "Always show playback",
+        "description": "Keep the player visible when nothing is playing",
+        "default": false
+      }
+    },
+    {
+      "type": "boolean",
+      "data": {
+        "key": "soundtrackEnabled",
+        "label": "Enable Soundtrack monitoring",
+        "description": "Monitor your Soundtrack widget when a status URL is set",
+        "default": false
+      }
+    },
+    {
+      "type": "string",
+      "data": {
+        "key": "soundtrackUrl",
+        "label": "Soundtrack status URL",
+        "description": "Optional status endpoint for your own Soundtrack instance",
+        "default": ""
+      }
+    }
+  ]
+}

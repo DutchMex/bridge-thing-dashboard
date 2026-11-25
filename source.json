@@ -1,0 +1,8 @@
+{
+  "name": "Bridge-Thing Dashboard",
+  "description": "Custom dashboards for BridgeThing devices.",
+  "homepage": "https://github.com/DutchMex/bridge-thing-dashboard",
+  "icon": null,
+  "base_url": "https://dutchmex.github.io/bridge-thing-dashboard",
+  "recommended_sources": []
+}
