@@ -204,9 +204,14 @@ const SOUNDTRACK_QUERY = `
   query NowPlayingInitial($zone: ID!) {
     nowPlaying(soundZone: $zone) {
       track(market: US) {
-        name
+        title
         artists {
           name
+        }
+        display {
+          image {
+            size(width: 300, height: 300)
+          }
         }
       }
     }
@@ -432,8 +437,26 @@ function Player({ state, onAction, sourceLabel }) {
   );
 }
 
+function SoundtrackCard({ track }) {
+  return (
+    <div className="soundtrack-card glass">
+      <div className="soundtrack-cover" style={track?.artworkUrl ? { backgroundImage: `url("${track.artworkUrl}")` } : undefined} aria-hidden="true">
+        {!track?.artworkUrl && <span>♫</span>}
+      </div>
+      <div className="soundtrack-track">
+        <div className="track-copy">
+          <strong>{track?.title || 'Soundtrack'}</strong>
+          <span>{track?.artist || 'Waiting for status update'}</span>
+        </div>
+      </div>
+      <span className="soundtrack-label">NOW PLAYING</span>
+    </div>
+  );
+}
+
 export default function App() {
   const [clockFace, setClockFace] = useState('digital');
+  const [backgroundTheme, setBackgroundTheme] = useState('midnight');
   const [unit, setUnit] = useState('celsius');
   const [location, setLocation] = useState('Amsterdam');
   const [dashboardLayout, setDashboardLayout] = useState('balanced');
@@ -444,6 +467,7 @@ export default function App() {
   const [showClock, setShowClock] = useState(true);
   const [showWeather, setShowWeather] = useState(true);
   const [showPlayback, setShowPlayback] = useState(true);
+  const [showSoundtrack, setShowSoundtrack] = useState(true);
   const [lowPowerMode, setLowPowerMode] = useState(false);
   const [weatherSharingEnabled, setWeatherSharingEnabled] = useState(false);
   const [alwaysPlayer, setAlwaysPlayer] = useState(false);
@@ -463,6 +487,7 @@ export default function App() {
       if (!reply.ok) return;
       const entries = Object.fromEntries(reply.response.entries.map(({ key, value }) => [key, value]));
       if (entries.clockFace) setClockFace(entries.clockFace);
+      if (entries.backgroundTheme) setBackgroundTheme(entries.backgroundTheme);
       if (entries.temperatureUnit) setUnit(entries.temperatureUnit);
       if (entries.weatherLocation) setLocation(entries.weatherLocation);
       if (entries.dashboardLayout) setDashboardLayout(entries.dashboardLayout);
@@ -473,6 +498,7 @@ export default function App() {
       if (Object.hasOwn(entries, 'showClock')) setShowClock(entries.showClock === 'true' || entries.showClock === true);
       if (Object.hasOwn(entries, 'showWeather')) setShowWeather(entries.showWeather === 'true' || entries.showWeather === true);
       if (Object.hasOwn(entries, 'showPlayback')) setShowPlayback(entries.showPlayback === 'true' || entries.showPlayback === true);
+      if (Object.hasOwn(entries, 'showSoundtrack')) setShowSoundtrack(entries.showSoundtrack === 'true' || entries.showSoundtrack === true);
       if (Object.hasOwn(entries, 'lowPowerMode')) setLowPowerMode(entries.lowPowerMode === 'true' || entries.lowPowerMode === true);
       if (Object.hasOwn(entries, 'weatherSharingEnabled')) setWeatherSharingEnabled(entries.weatherSharingEnabled === 'true' || entries.weatherSharingEnabled === true);
       if (entries.alwaysShowPlayback) setAlwaysPlayer(entries.alwaysShowPlayback === 'true');
@@ -482,6 +508,7 @@ export default function App() {
     readConfig();
     const offConfig = client.config.onChanged(({ key, value }) => {
       if (key === 'clockFace') setClockFace(value || 'digital');
+      if (key === 'backgroundTheme') setBackgroundTheme(value || 'midnight');
       if (key === 'temperatureUnit') setUnit(value || 'celsius');
       if (key === 'weatherLocation') setLocation(value || 'Amsterdam');
       if (key === 'dashboardLayout') setDashboardLayout(value || 'balanced');
@@ -492,6 +519,7 @@ export default function App() {
       if (key === 'showClock') setShowClock(value === 'true' || value === true);
       if (key === 'showWeather') setShowWeather(value === 'true' || value === true);
       if (key === 'showPlayback') setShowPlayback(value === 'true' || value === true);
+      if (key === 'showSoundtrack') setShowSoundtrack(value === 'true' || value === true);
       if (key === 'lowPowerMode') setLowPowerMode(value === 'true' || value === true);
       if (key === 'weatherSharingEnabled') setWeatherSharingEnabled(value === 'true' || value === true);
       if (key === 'alwaysShowPlayback') setAlwaysPlayer(value === 'true');
@@ -530,10 +558,11 @@ export default function App() {
           throw new Error(data.errors.map(({ message }) => message).filter(Boolean).join('; ') || 'Soundtrack returned a GraphQL error.');
         }
         const track = data?.data?.nowPlaying?.track;
-        if (track?.name || track?.artists?.length) {
+        if (track?.title || track?.artists?.length) {
           setSoundtrackTrack({
-            title: track.name || 'Unknown track',
+            title: track.title || 'Unknown track',
             artist: track.artists?.map(({ name }) => name).filter(Boolean).join(', ') || 'Unknown artist',
+            artworkUrl: track.display?.image?.size || '',
           });
         } else {
           setSoundtrackTrack(null);
@@ -560,22 +589,22 @@ export default function App() {
   }
 
   const soundtrackConfigured = soundtrackEnabled && Boolean(soundtrackUrl.trim());
-  const showPlayer = showPlayback && (alwaysPlayer || playerState?.playback?.state === 'playing' || Boolean(soundtrackTrack) || soundtrackConfigured);
-  const displayPlayerState = soundtrackConfigured
-    ? soundtrackTrack
-      ? { ...playerState, track: soundtrackTrack, playback: { state: 'playing', positionMs: 0 } }
-      : null
-    : playerState;
+  const showPlayer = showPlayback && (alwaysPlayer || playerState?.playback?.state === 'playing');
+  const showSoundtrackCard = showSoundtrack && soundtrackConfigured;
+  const mediaCount = Number(showPlayer) + Number(showSoundtrackCard);
 
   return (
-    <main className="dashboard" data-layout={dashboardLayout} data-spacing={widgetSpacing} data-performance={lowPowerMode ? 'low' : 'full'}>
+    <main className="dashboard" data-layout={dashboardLayout} data-spacing={widgetSpacing} data-performance={lowPowerMode ? 'low' : 'full'} data-theme={backgroundTheme}>
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
       {showClock && <section className="clock-panel glass" data-size={clockSize}><Clock face={clockFace} /></section>}
       {showWeather && <aside className="side-column" data-size={weatherSize}>
         <Weather unit={unit} location={location} sharingEnabled={weatherSharingEnabled} onSearch={() => setSearchOpen(true)} />
       </aside>}
-      {showPlayer && <div className="player-slot" data-size={playerSize}><Player state={displayPlayerState} onAction={playbackAction} sourceLabel={soundtrackConfigured ? 'Soundtrack' : ''} /></div>}
+      {mediaCount > 0 && <section className="media-row" data-count={mediaCount}>
+        {showPlayer && <div className="player-slot" data-size={playerSize}><Player state={playerState} onAction={playbackAction} sourceLabel="" /></div>}
+        {showSoundtrackCard && <div className="soundtrack-slot"><SoundtrackCard track={soundtrackTrack} /></div>}
+      </section>}
       {soundtrackError && <p className="dashboard-message" role="status">{soundtrackError}</p>}
       {searchOpen && <LocationSearch location={location} sharingEnabled={weatherSharingEnabled} onClose={() => setSearchOpen(false)} onSelect={(place) => {
         setLocation([place.name, place.admin1, place.country].filter(Boolean).join(', '));

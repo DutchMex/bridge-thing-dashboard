@@ -2,6 +2,11 @@
 
 A custom dashboard for BridgeThing-ed CarThings
 
+The dashboard can be customized in Desktop settings, including gradient and
+solid background themes. Soundtrack now-playing information and device playback
+controls have separate visibility settings; the weather location is managed
+once through the city search.
+
 ## Develop and test on a device
 
 This repository uses the BridgeThing source workspace. Install Bun 1.4.0 or

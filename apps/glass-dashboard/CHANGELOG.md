@@ -1,5 +1,11 @@
 # Glass Dashboard
 
+## 0.1.3
+
+- Add selectable gradient and solid background themes.
+- Separate Soundtrack now-playing display from playback controls, including Soundtrack cover art.
+- Keep the weather location in the city search instead of duplicating it in Desktop settings.
+
 ## 0.1.2
 
 - Redraw sunrise and sunset icons as clear, distinct symbols.

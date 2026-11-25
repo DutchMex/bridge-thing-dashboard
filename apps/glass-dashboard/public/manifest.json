@@ -1,10 +1,15 @@
 {
   "id": "0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301",
   "name": "Glass Dashboard",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A liquid-glass dashboard with clock, weather and playback.",
-  "categories": ["dashboards", "clocks-weather"],
-  "permissions": ["net.fetch"],
+  "categories": [
+    "dashboards",
+    "clocks-weather"
+  ],
+  "permissions": [
+    "net.fetch"
+  ],
   "settings": "settings/index.html",
   "art": {
     "heroPx": 248,
@@ -16,7 +21,13 @@
       "data": {
         "key": "clockFace",
         "label": "Clock face",
-        "choices": ["fuzzy", "binary", "analog", "digital", "pixel"],
+        "choices": [
+          "fuzzy",
+          "binary",
+          "analog",
+          "digital",
+          "pixel"
+        ],
         "choiceLabels": {
           "fuzzy": "Fuzzy",
           "binary": "Binary",
@@ -30,9 +41,39 @@
     {
       "type": "enum",
       "data": {
+        "key": "backgroundTheme",
+        "label": "Background theme",
+        "description": "Choose a gradient or solid dashboard background",
+        "choices": [
+          "midnight",
+          "ocean",
+          "aurora",
+          "sunset",
+          "solid-charcoal",
+          "solid-navy",
+          "solid-forest"
+        ],
+        "choiceLabels": {
+          "midnight": "Midnight gradient",
+          "ocean": "Ocean gradient",
+          "aurora": "Aurora gradient",
+          "sunset": "Sunset gradient",
+          "solid-charcoal": "Solid charcoal",
+          "solid-navy": "Solid navy",
+          "solid-forest": "Solid forest"
+        },
+        "default": "midnight"
+      }
+    },
+    {
+      "type": "enum",
+      "data": {
         "key": "temperatureUnit",
         "label": "Temperature",
-        "choices": ["celsius", "fahrenheit"],
+        "choices": [
+          "celsius",
+          "fahrenheit"
+        ],
         "choiceLabels": {
           "celsius": "Celsius",
           "fahrenheit": "Fahrenheit"
@@ -46,7 +87,12 @@
         "key": "dashboardLayout",
         "label": "Widget layout",
         "description": "Choose how the clock, weather and playback widgets are arranged",
-        "choices": ["balanced", "weather-focus", "side-by-side", "stacked"],
+        "choices": [
+          "balanced",
+          "weather-focus",
+          "side-by-side",
+          "stacked"
+        ],
         "choiceLabels": {
           "balanced": "Clock and weather",
           "weather-focus": "Weather focus",
@@ -61,7 +107,11 @@
       "data": {
         "key": "widgetSpacing",
         "label": "Widget spacing",
-        "choices": ["compact", "balanced", "spacious"],
+        "choices": [
+          "compact",
+          "balanced",
+          "spacious"
+        ],
         "choiceLabels": {
           "compact": "Compact",
           "balanced": "Balanced",
@@ -75,7 +125,11 @@
       "data": {
         "key": "clockSize",
         "label": "Clock size",
-        "choices": ["compact", "balanced", "large"],
+        "choices": [
+          "compact",
+          "balanced",
+          "large"
+        ],
         "choiceLabels": {
           "compact": "Compact",
           "balanced": "Balanced",
@@ -89,7 +143,11 @@
       "data": {
         "key": "weatherSize",
         "label": "Weather size",
-        "choices": ["compact", "balanced", "large"],
+        "choices": [
+          "compact",
+          "balanced",
+          "large"
+        ],
         "choiceLabels": {
           "compact": "Compact",
           "balanced": "Balanced",
@@ -103,7 +161,11 @@
       "data": {
         "key": "playerSize",
         "label": "Playback size",
-        "choices": ["compact", "balanced", "large"],
+        "choices": [
+          "compact",
+          "balanced",
+          "large"
+        ],
         "choiceLabels": {
           "compact": "Compact",
           "balanced": "Balanced",
@@ -132,8 +194,17 @@
       "type": "boolean",
       "data": {
         "key": "showPlayback",
-        "label": "Show playback widget",
-        "description": "Hide the playback widget even when music is playing",
+        "label": "Show playback",
+        "description": "Show playback controls when music is playing",
+        "default": true
+      }
+    },
+    {
+      "type": "boolean",
+      "data": {
+        "key": "showSoundtrack",
+        "label": "Show Soundtrack",
+        "description": "Show Soundtrack's now-playing information separately from playback controls",
         "default": true
       }
     },
@@ -153,18 +224,6 @@
         "label": "Enable weather data sharing",
         "description": "Allow your city name and resolved coordinates to be sent to Open-Meteo for weather data",
         "default": false
-      }
-    },
-    {
-      "type": "string",
-      "data": {
-        "key": "weatherLocation",
-        "label": "Weather location",
-        "description": "Choose a city in the dashboard or Desktop settings. Its name and forecast coordinates are shared with Open-Meteo only when weather data sharing is enabled.",
-        "pattern": null,
-        "minLength": null,
-        "maxLength": null,
-        "default": "Amsterdam"
       }
     },
     {
