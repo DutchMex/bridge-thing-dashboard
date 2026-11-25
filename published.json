@@ -5,6 +5,12 @@
       "sha256": "671eb8abc278d536cfdde615c1f67dba898056670abaa60e680a5e03d8bdac03",
       "size": 378407,
       "file": "r/0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301/0.1.0.zip"
+    },
+    "0.1.1": {
+      "released_at": "2026-11-25T21:38:43.249Z",
+      "sha256": "ed46e32cd208fa53c52bd7055314674f24f40cc0ef31f43e9074f76c03cda9c1",
+      "size": 383072,
+      "file": "r/0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301/0.1.1.zip"
     }
   }
 }

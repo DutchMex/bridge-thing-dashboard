@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-11-25T21:26:51.616Z",
+  "updated_at": "2026-11-25T21:38:43.467Z",
   "repo": {
     "name": "Bridge-Thing Dashboard",
     "description": "Custom dashboards for BridgeThing devices.",
@@ -22,6 +22,20 @@
       "homepage": "https://github.com/DutchMex/bridge-thing-dashboard",
       "source": "https://github.com/DutchMex/bridge-thing-dashboard",
       "versions": [
+        {
+          "version": "0.1.1",
+          "released_at": "2026-11-25T21:38:43.249Z",
+          "download": {
+            "url": "https://dutchmex.github.io/bridge-thing-dashboard/r/0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301/0.1.1.zip",
+            "size": 383072,
+            "sha256": "ed46e32cd208fa53c52bd7055314674f24f40cc0ef31f43e9074f76c03cda9c1"
+          },
+          "permissions": [
+            "net.fetch"
+          ],
+          "min_libbridgething_version": "0.17.0",
+          "changelog": "- Fix weather requests and add automatic city suggestions while typing.\n- Show Soundtrack monitoring whenever it is configured.\n- Publish widget layout and display settings for desktop app configuration."
+        },
         {
           "version": "0.1.0",
           "released_at": "2026-11-25T20:05:41.789Z",
