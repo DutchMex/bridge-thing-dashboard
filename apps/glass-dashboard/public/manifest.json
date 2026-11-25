@@ -3,9 +3,8 @@
   "name": "Glass Dashboard",
   "version": "0.1.0",
   "description": "A liquid-glass dashboard with clock, weather and playback.",
-  "author": "DutchMex",
   "categories": ["dashboards", "clocks-weather"],
-  "permissions": ["net.fetch", "geo"],
+  "permissions": ["net.fetch"],
   "art": {
     "heroPx": 248,
     "thumbPx": 96
@@ -41,11 +40,126 @@
       }
     },
     {
+      "type": "enum",
+      "data": {
+        "key": "dashboardLayout",
+        "label": "Widget layout",
+        "description": "Choose how the clock, weather and playback widgets are arranged",
+        "choices": ["balanced", "weather-focus", "side-by-side", "stacked"],
+        "choiceLabels": {
+          "balanced": "Clock and weather",
+          "weather-focus": "Weather focus",
+          "side-by-side": "Side by side",
+          "stacked": "Stacked"
+        },
+        "default": "balanced"
+      }
+    },
+    {
+      "type": "enum",
+      "data": {
+        "key": "widgetSpacing",
+        "label": "Widget spacing",
+        "choices": ["compact", "balanced", "spacious"],
+        "choiceLabels": {
+          "compact": "Compact",
+          "balanced": "Balanced",
+          "spacious": "Spacious"
+        },
+        "default": "balanced"
+      }
+    },
+    {
+      "type": "enum",
+      "data": {
+        "key": "clockSize",
+        "label": "Clock size",
+        "choices": ["compact", "balanced", "large"],
+        "choiceLabels": {
+          "compact": "Compact",
+          "balanced": "Balanced",
+          "large": "Large"
+        },
+        "default": "balanced"
+      }
+    },
+    {
+      "type": "enum",
+      "data": {
+        "key": "weatherSize",
+        "label": "Weather size",
+        "choices": ["compact", "balanced", "large"],
+        "choiceLabels": {
+          "compact": "Compact",
+          "balanced": "Balanced",
+          "large": "Large"
+        },
+        "default": "balanced"
+      }
+    },
+    {
+      "type": "enum",
+      "data": {
+        "key": "playerSize",
+        "label": "Playback size",
+        "choices": ["compact", "balanced", "large"],
+        "choiceLabels": {
+          "compact": "Compact",
+          "balanced": "Balanced",
+          "large": "Large"
+        },
+        "default": "balanced"
+      }
+    },
+    {
+      "type": "boolean",
+      "data": {
+        "key": "showClock",
+        "label": "Show clock",
+        "default": true
+      }
+    },
+    {
+      "type": "boolean",
+      "data": {
+        "key": "showWeather",
+        "label": "Show weather",
+        "default": true
+      }
+    },
+    {
+      "type": "boolean",
+      "data": {
+        "key": "showPlayback",
+        "label": "Show playback widget",
+        "description": "Hide the playback widget even when music is playing",
+        "default": true
+      }
+    },
+    {
+      "type": "boolean",
+      "data": {
+        "key": "lowPowerMode",
+        "label": "Reduce visual effects",
+        "description": "Disable backdrop blur and ambient effects for lower-power devices",
+        "default": false
+      }
+    },
+    {
+      "type": "boolean",
+      "data": {
+        "key": "weatherSharingEnabled",
+        "label": "Enable weather data sharing",
+        "description": "Allow your city name and resolved coordinates to be sent to Open-Meteo for weather data",
+        "default": false
+      }
+    },
+    {
       "type": "string",
       "data": {
         "key": "weatherLocation",
         "label": "Weather location",
-        "description": "City name",
+        "description": "City name; shared with Open-Meteo only when weather data sharing is enabled",
         "default": "Amsterdam"
       }
     },
@@ -63,7 +177,7 @@
       "data": {
         "key": "soundtrackEnabled",
         "label": "Enable Soundtrack monitoring",
-        "description": "Monitor your Soundtrack widget when a status URL is set",
+        "description": "Poll the configured status URL every 5 seconds. Use only a trusted endpoint; redirects and remote artwork are ignored.",
         "default": false
       }
     },
@@ -72,7 +186,7 @@
       "data": {
         "key": "soundtrackUrl",
         "label": "Soundtrack status URL",
-        "description": "Optional status endpoint for your own Soundtrack instance",
+        "description": "Optional HTTP(S) endpoint for your own Soundtrack instance. Requests are sent to this URL.",
         "default": ""
       }
     }

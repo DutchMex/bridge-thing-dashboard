@@ -121,27 +121,45 @@ function Clock({ face }) {
   );
 }
 
-async function netFetch(url) {
+async function netFetch(url, { redirect = 'follow', allowBrowserFallback = true } = {}) {
+  let result;
   try {
-    const result = await client.net.fetch({
-      request: { url, method: 'get', headers: [], body: null, timeoutMs: 15000, redirect: 'follow' },
+    result = await client.net.fetch({
+      request: { url, method: 'get', headers: [], body: null, timeoutMs: 15000, redirect },
     });
-    if (result.ok) {
-      const bytes = result.response.response.body;
-      return JSON.parse(new TextDecoder().decode(bytes));
-    }
-  } catch {}
-  const response = await fetch(url);
+  } catch (error) {
+    if (!allowBrowserFallback) throw error;
+  }
+  if (result?.ok) {
+    const bytes = result.response.response.body;
+    return JSON.parse(new TextDecoder().decode(bytes));
+  }
+  if (!allowBrowserFallback) throw new Error('Request was rejected by the host network service');
+  const response = await fetch(url, { redirect });
   if (!response.ok) throw new Error(`Request failed: ${response.status}`);
   return response.json();
 }
 
-function Weather({ unit, location, onSearch }) {
+function parseSoundtrackUrl(value) {
+  const url = new URL(value);
+  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) {
+    throw new Error('Use an HTTP(S) URL without embedded credentials.');
+  }
+  return url.href;
+}
+
+function Weather({ unit, location, sharingEnabled, onSearch }) {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
+    if (!sharingEnabled) {
+      setWeather(null);
+      setLoading(false);
+      return () => { cancelled = true; };
+    }
+
     async function load() {
       setLoading(true);
       try {
@@ -149,10 +167,6 @@ function Weather({ unit, location, onSearch }) {
         if (location) {
           const found = await netFetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=1&language=en&format=json`);
           place = found.results?.[0];
-        }
-        if (!place) {
-          const geo = await client.geo.getOnce({ accuracy: 'coarse' }).catch(() => null);
-          if (geo?.ok) place = { latitude: geo.response.position.lat, longitude: geo.response.position.lon, name: 'Current location' };
         }
         if (!place) throw new Error('Location unavailable');
         const tempUnit = unit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
@@ -167,7 +181,7 @@ function Weather({ unit, location, onSearch }) {
     load();
     const timer = window.setInterval(load, 15 * 60 * 1000);
     return () => { cancelled = true; window.clearInterval(timer); };
-  }, [location, unit]);
+  }, [location, sharingEnabled, unit]);
 
   const temperature = weather?.current?.temperature_2m;
   const code = weather?.current?.weather_code;
@@ -181,12 +195,12 @@ function Weather({ unit, location, onSearch }) {
           <span>{weather?.placeName || 'Weather'}</span>
         </div>
       </div>
-      <div className="weather-detail"><Icon name="location" size={15} /> <span>{weather ? `${weather.current?.relative_humidity_2m ?? '--'}% humidity` : 'Tap to search'}</span></div>
+      <div className="weather-detail"><Icon name="location" size={15} /> <span>{weather ? `${weather.current?.relative_humidity_2m ?? '--'}% humidity` : sharingEnabled ? 'Tap to search' : 'Enable weather sharing in settings'}</span></div>
     </button>
   );
 }
 
-function LocationSearch({ location, onClose, onSelect }) {
+function LocationSearch({ location, sharingEnabled, onClose, onSelect }) {
   const [query, setQuery] = useState(location);
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -194,7 +208,7 @@ function LocationSearch({ location, onClose, onSelect }) {
 
   async function search(event) {
     event?.preventDefault();
-    if (!query.trim()) return;
+    if (!sharingEnabled || !query.trim()) return;
     setSearching(true);
     try {
       const data = await netFetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query.trim())}&count=6&language=en&format=json`);
@@ -211,16 +225,21 @@ function LocationSearch({ location, onClose, onSelect }) {
       <div className="location-search glass">
         <form onSubmit={search}>
           <Icon name="search" size={18} />
-          <input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search city" />
-          <button type="submit" className="text-button">{searching ? '...' : 'Search'}</button>
+          <input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search city" disabled={!sharingEnabled} />
+          <button type="submit" className="text-button" disabled={!sharingEnabled}>{searching ? '...' : 'Search'}</button>
         </form>
+        <p className="search-disclosure">
+          {sharingEnabled
+            ? 'City searches and forecast coordinates are sent to Open-Meteo.'
+            : 'Enable weather data sharing in settings before searching. No location is sent while it is off.'}
+        </p>
         <div className="search-results">
           {results.map((place) => (
             <button type="button" key={`${place.id}-${place.latitude}`} onClick={() => onSelect(place.name)}>
               <span>{place.name}</span><small>{[place.admin1, place.country].filter(Boolean).join(', ')}</small>
             </button>
           ))}
-          {!results.length && !searching && <p>Search for a city to update the forecast.</p>}
+          {!results.length && !searching && sharingEnabled && <p>Search for a city to update the forecast.</p>}
         </div>
         <button type="button" className="close-search" onClick={onClose}>Done</button>
       </div>
@@ -281,11 +300,22 @@ export default function App() {
   const [clockFace, setClockFace] = useState('digital');
   const [unit, setUnit] = useState('celsius');
   const [location, setLocation] = useState('Amsterdam');
+  const [dashboardLayout, setDashboardLayout] = useState('balanced');
+  const [widgetSpacing, setWidgetSpacing] = useState('balanced');
+  const [clockSize, setClockSize] = useState('balanced');
+  const [weatherSize, setWeatherSize] = useState('balanced');
+  const [playerSize, setPlayerSize] = useState('balanced');
+  const [showClock, setShowClock] = useState(true);
+  const [showWeather, setShowWeather] = useState(true);
+  const [showPlayback, setShowPlayback] = useState(true);
+  const [lowPowerMode, setLowPowerMode] = useState(false);
+  const [weatherSharingEnabled, setWeatherSharingEnabled] = useState(false);
   const [alwaysPlayer, setAlwaysPlayer] = useState(false);
   const [playerState, setPlayerState] = useState(null);
   const [soundtrackEnabled, setSoundtrackEnabled] = useState(false);
   const [soundtrackUrl, setSoundtrackUrl] = useState('');
   const [soundtrackTrack, setSoundtrackTrack] = useState(null);
+  const [soundtrackError, setSoundtrackError] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
@@ -299,6 +329,16 @@ export default function App() {
       if (entries.clockFace) setClockFace(entries.clockFace);
       if (entries.temperatureUnit) setUnit(entries.temperatureUnit);
       if (entries.weatherLocation) setLocation(entries.weatherLocation);
+      if (entries.dashboardLayout) setDashboardLayout(entries.dashboardLayout);
+      if (entries.widgetSpacing) setWidgetSpacing(entries.widgetSpacing);
+      if (entries.clockSize) setClockSize(entries.clockSize);
+      if (entries.weatherSize) setWeatherSize(entries.weatherSize);
+      if (entries.playerSize) setPlayerSize(entries.playerSize);
+      if (Object.hasOwn(entries, 'showClock')) setShowClock(entries.showClock === 'true' || entries.showClock === true);
+      if (Object.hasOwn(entries, 'showWeather')) setShowWeather(entries.showWeather === 'true' || entries.showWeather === true);
+      if (Object.hasOwn(entries, 'showPlayback')) setShowPlayback(entries.showPlayback === 'true' || entries.showPlayback === true);
+      if (Object.hasOwn(entries, 'lowPowerMode')) setLowPowerMode(entries.lowPowerMode === 'true' || entries.lowPowerMode === true);
+      if (Object.hasOwn(entries, 'weatherSharingEnabled')) setWeatherSharingEnabled(entries.weatherSharingEnabled === 'true' || entries.weatherSharingEnabled === true);
       if (entries.alwaysShowPlayback) setAlwaysPlayer(entries.alwaysShowPlayback === 'true');
       if (entries.soundtrackEnabled) setSoundtrackEnabled(entries.soundtrackEnabled === 'true');
       if (entries.soundtrackUrl) setSoundtrackUrl(entries.soundtrackUrl);
@@ -308,6 +348,16 @@ export default function App() {
       if (key === 'clockFace') setClockFace(value || 'digital');
       if (key === 'temperatureUnit') setUnit(value || 'celsius');
       if (key === 'weatherLocation') setLocation(value || 'Amsterdam');
+      if (key === 'dashboardLayout') setDashboardLayout(value || 'balanced');
+      if (key === 'widgetSpacing') setWidgetSpacing(value || 'balanced');
+      if (key === 'clockSize') setClockSize(value || 'balanced');
+      if (key === 'weatherSize') setWeatherSize(value || 'balanced');
+      if (key === 'playerSize') setPlayerSize(value || 'balanced');
+      if (key === 'showClock') setShowClock(value === 'true' || value === true);
+      if (key === 'showWeather') setShowWeather(value === 'true' || value === true);
+      if (key === 'showPlayback') setShowPlayback(value === 'true' || value === true);
+      if (key === 'lowPowerMode') setLowPowerMode(value === 'true' || value === true);
+      if (key === 'weatherSharingEnabled') setWeatherSharingEnabled(value === 'true' || value === true);
       if (key === 'alwaysShowPlayback') setAlwaysPlayer(value === 'true');
       if (key === 'soundtrackEnabled') setSoundtrackEnabled(value === 'true');
       if (key === 'soundtrackUrl') setSoundtrackUrl(value || '');
@@ -318,12 +368,22 @@ export default function App() {
   useEffect(() => {
     if (!soundtrackEnabled || !soundtrackUrl.trim()) {
       setSoundtrackTrack(null);
+      setSoundtrackError('');
       return;
     }
+    let endpoint;
+    try {
+      endpoint = parseSoundtrackUrl(soundtrackUrl.trim());
+    } catch (error) {
+      setSoundtrackTrack(null);
+      setSoundtrackError(error.message);
+      return;
+    }
+
     let cancelled = false;
     async function poll() {
       try {
-        const data = await netFetch(soundtrackUrl.trim());
+        const data = await netFetch(endpoint, { redirect: 'error', allowBrowserFallback: false });
         if (cancelled) return;
         const item = data?.track || data?.currentTrack || data?.nowPlaying || data?.now_playing || data;
         const title = item?.title || item?.name || item?.song || item?.trackName;
@@ -332,14 +392,16 @@ export default function App() {
           setSoundtrackTrack({
             title: title || 'Unknown track',
             artist: artist || 'Unknown artist',
-            artworkId: item?.artworkId,
-            artworkUrl: item?.artworkUrl || item?.artwork || item?.imageUrl,
           });
         } else {
           setSoundtrackTrack(null);
         }
+        setSoundtrackError('');
       } catch {
-        if (!cancelled) setSoundtrackTrack(null);
+        if (!cancelled) {
+          setSoundtrackTrack(null);
+          setSoundtrackError('Soundtrack status unavailable. Check the URL and host permissions.');
+        }
       }
     }
     poll();
@@ -354,21 +416,22 @@ export default function App() {
     else if (action === 'next') await client.player.skipNext();
   }
 
-  const showPlayer = alwaysPlayer || playerState?.playback?.state === 'playing' || Boolean(soundtrackTrack);
+  const showPlayer = showPlayback && (alwaysPlayer || playerState?.playback?.state === 'playing' || Boolean(soundtrackTrack));
   const displayPlayerState = soundtrackTrack && !playerState?.track
     ? { ...playerState, track: soundtrackTrack, playback: { state: 'playing', positionMs: 0 } }
     : playerState;
 
   return (
-    <main className="dashboard">
+    <main className="dashboard" data-layout={dashboardLayout} data-spacing={widgetSpacing} data-performance={lowPowerMode ? 'low' : 'full'}>
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
-      <section className="clock-panel glass"><Clock face={clockFace} /></section>
-      <aside className="side-column">
-        <Weather unit={unit} location={location} onSearch={() => setSearchOpen(true)} />
-      </aside>
-      {showPlayer && <Player state={displayPlayerState} onAction={playbackAction} />}
-      {searchOpen && <LocationSearch location={location} onClose={() => setSearchOpen(false)} onSelect={(name) => { setLocation(name); setSearchOpen(false); }} />}
+      {showClock && <section className="clock-panel glass" data-size={clockSize}><Clock face={clockFace} /></section>}
+      {showWeather && <aside className="side-column" data-size={weatherSize}>
+        <Weather unit={unit} location={location} sharingEnabled={weatherSharingEnabled} onSearch={() => setSearchOpen(true)} />
+      </aside>}
+      {showPlayer && <div className="player-slot" data-size={playerSize}><Player state={displayPlayerState} onAction={playbackAction} /></div>}
+      {soundtrackError && <p className="dashboard-message" role="status">{soundtrackError}</p>}
+      {searchOpen && <LocationSearch location={location} sharingEnabled={weatherSharingEnabled} onClose={() => setSearchOpen(false)} onSelect={(name) => { setLocation(name); setSearchOpen(false); }} />}
     </main>
   );
 }

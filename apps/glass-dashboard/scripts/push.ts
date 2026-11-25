@@ -252,7 +252,7 @@ async function setSlot(target, slot, id) {
 
 // ../webapp-shared/src/push.ts
 var WEBAPP_ROOT = '/var/bridgething/webapps';
-var SSH_OPTS = ['-o', 'UserKnownHostsFile=/dev/null', '-o', 'StrictHostKeyChecking=no', '-o', 'LogLevel=ERROR'];
+var SSH_OPTS = ['-o', 'StrictHostKeyChecking=yes', '-o', 'LogLevel=ERROR'];
 function run(cmd, args, label, cwd) {
   return new Promise((res, rej) => {
     const child = spawn(cmd, args, { stdio: 'inherit', cwd });
@@ -328,6 +328,7 @@ function printHelp() {
   console.log(`Usage: bun run push [host] [options]
 
 Build, copy dist/ onto a connected Car Thing, and make it visible.
+The target SSH host key must already be trusted in your known_hosts file.
 
 A plain webapp becomes the active app. A launcher also takes the home-screen
 slot; an overlay takes the overlay slot and the daemon reloads the kiosk so it
