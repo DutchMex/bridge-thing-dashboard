@@ -1,7 +1,7 @@
 {
   "id": "0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301",
   "name": "Glass Dashboard",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A liquid-glass dashboard with clock, weather and playback.",
   "categories": ["dashboards", "clocks-weather"],
   "permissions": ["net.fetch"],
@@ -160,6 +160,9 @@
         "key": "weatherLocation",
         "label": "Weather location",
         "description": "City name; shared with Open-Meteo only when weather data sharing is enabled",
+        "pattern": null,
+        "minLength": null,
+        "maxLength": null,
         "default": "Amsterdam"
       }
     },
@@ -187,6 +190,9 @@
         "key": "soundtrackUrl",
         "label": "Soundtrack status URL",
         "description": "Optional HTTP(S) endpoint for your own Soundtrack instance. Requests are sent to this URL.",
+        "pattern": null,
+        "minLength": null,
+        "maxLength": null,
         "default": ""
       }
     }

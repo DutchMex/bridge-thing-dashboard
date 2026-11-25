@@ -125,13 +125,15 @@ async function netFetch(url, { redirect = 'follow', allowBrowserFallback = true 
   let result;
   try {
     result = await client.net.fetch({
-      request: { url, method: 'get', headers: [], body: null, timeoutMs: 15000, redirect },
+      request: { url, method: 'GET', headers: [], body: null, timeoutMs: 15000, redirect },
     });
   } catch (error) {
     if (!allowBrowserFallback) throw error;
   }
   if (result?.ok) {
-    const bytes = result.response.response.body;
+    const { status, body } = result.response.response;
+    if (status < 200 || status >= 300) throw new Error(`Request failed: ${status}`);
+    const bytes = body;
     return JSON.parse(new TextDecoder().decode(bytes));
   }
   if (!allowBrowserFallback) throw new Error('Request was rejected by the host network service');
@@ -151,12 +153,14 @@ function parseSoundtrackUrl(value) {
 function Weather({ unit, location, sharingEnabled, onSearch }) {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     let cancelled = false;
     if (!sharingEnabled) {
       setWeather(null);
       setLoading(false);
+      setError('');
       return () => { cancelled = true; };
     }
 
@@ -168,12 +172,19 @@ function Weather({ unit, location, sharingEnabled, onSearch }) {
           const found = await netFetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=1&language=en&format=json`);
           place = found.results?.[0];
         }
-        if (!place) throw new Error('Location unavailable');
+        if (!place) throw new Error('Location not found');
         const tempUnit = unit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
         const data = await netFetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.latitude}&longitude=${place.longitude}&current=temperature_2m,relative_humidity_2m,is_day,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&temperature_unit=${tempUnit}`);
-        if (!cancelled) setWeather({ ...data, placeName: place.name || place.admin1 || location });
-      } catch {
-        if (!cancelled) setWeather(null);
+        if (!data.current) throw new Error('Weather forecast is unavailable');
+        if (!cancelled) {
+          setWeather({ ...data, placeName: place.name || place.admin1 || location });
+          setError('');
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setWeather(null);
+          setError(error instanceof Error ? error.message : 'Weather is unavailable');
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -192,7 +203,7 @@ function Weather({ unit, location, sharingEnabled, onSearch }) {
         <span className="weather-icon">{weather ? weatherIcon(code) : '—'}</span>
         <div>
           <strong>{loading ? '…' : temperature != null ? `${Math.round(temperature)}${symbol}` : '--'}</strong>
-          <span>{weather?.placeName || 'Weather'}</span>
+          <span>{weather?.placeName || (sharingEnabled ? error || 'Weather' : 'Weather sharing is off')}</span>
         </div>
       </div>
       <div className="weather-detail"><Icon name="location" size={15} /> <span>{weather ? `${weather.current?.relative_humidity_2m ?? '--'}% humidity` : sharingEnabled ? 'Tap to search' : 'Enable weather sharing in settings'}</span></div>
@@ -204,29 +215,49 @@ function LocationSearch({ location, sharingEnabled, onClose, onSelect }) {
   const [query, setQuery] = useState(location);
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
+  const [searchError, setSearchError] = useState('');
   useEffect(() => { setQuery(location); }, [location]);
 
-  async function search(event) {
-    event?.preventDefault();
-    if (!sharingEnabled || !query.trim()) return;
-    setSearching(true);
-    try {
-      const data = await netFetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query.trim())}&count=6&language=en&format=json`);
-      setResults(data.results || []);
-    } catch {
+  useEffect(() => {
+    const term = query.trim();
+    if (!sharingEnabled || term.length < 2) {
       setResults([]);
-    } finally {
       setSearching(false);
+      setSearchError('');
+      return undefined;
     }
-  }
+
+    let cancelled = false;
+    setResults([]);
+    setSearching(false);
+    const timer = window.setTimeout(async () => {
+      setSearching(true);
+      setSearchError('');
+      try {
+        const data = await netFetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(term)}&count=6&language=en&format=json`);
+        if (!cancelled) setResults(Array.isArray(data.results) ? data.results : []);
+      } catch (error) {
+        if (!cancelled) {
+          setResults([]);
+          setSearchError(error instanceof Error ? error.message : 'Location search failed');
+        }
+      } finally {
+        if (!cancelled) setSearching(false);
+      }
+    }, 300);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [query, sharingEnabled]);
 
   return (
     <div className="search-backdrop" role="dialog" aria-modal="true" aria-label="Choose weather location">
       <div className="location-search glass">
-        <form onSubmit={search}>
+        <form onSubmit={(event) => event.preventDefault()}>
           <Icon name="search" size={18} />
-          <input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search city" disabled={!sharingEnabled} />
-          <button type="submit" className="text-button" disabled={!sharingEnabled}>{searching ? '...' : 'Search'}</button>
+          <input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Type a city name" disabled={!sharingEnabled} />
+          <span className="search-status" aria-live="polite">{searching ? 'Searching…' : ''}</span>
         </form>
         <p className="search-disclosure">
           {sharingEnabled
@@ -235,11 +266,12 @@ function LocationSearch({ location, sharingEnabled, onClose, onSelect }) {
         </p>
         <div className="search-results">
           {results.map((place) => (
-            <button type="button" key={`${place.id}-${place.latitude}`} onClick={() => onSelect(place.name)}>
+            <button type="button" key={`${place.id}-${place.latitude}`} onClick={() => onSelect(place)}>
               <span>{place.name}</span><small>{[place.admin1, place.country].filter(Boolean).join(', ')}</small>
             </button>
           ))}
-          {!results.length && !searching && sharingEnabled && <p>Search for a city to update the forecast.</p>}
+          {searchError && <p role="status">{searchError}</p>}
+          {!results.length && !searching && !searchError && sharingEnabled && <p>{query.trim().length >= 2 ? 'No matching locations found.' : 'Type at least two characters to search.'}</p>}
         </div>
         <button type="button" className="close-search" onClick={onClose}>Done</button>
       </div>
@@ -247,7 +279,7 @@ function LocationSearch({ location, sharingEnabled, onClose, onSelect }) {
   );
 }
 
-function Player({ state, onAction }) {
+function Player({ state, onAction, sourceLabel }) {
   const track = state?.track;
   const playback = state?.playback;
   const [artUrl, setArtUrl] = useState('');
@@ -282,7 +314,10 @@ function Player({ state, onAction }) {
     <div className="player glass">
       <div className="album" style={artUrl ? { backgroundImage: `url(${artUrl})` } : undefined}>{!artUrl && <span>♪</span>}</div>
       <div className="track">
-        <div className="track-copy"><strong>{track?.title || 'Nothing playing'}</strong><span>{track?.artist || 'Waiting for music'}</span></div>
+        <div className="track-copy">
+          <strong>{track?.title || (sourceLabel ? `${sourceLabel} monitor` : 'Nothing playing')}</strong>
+          <span>{track?.artist || (sourceLabel ? 'Waiting for status update' : 'Waiting for music')}</span>
+        </div>
         <div className="progress"><span style={{ width: `${progress}%` }} /></div>
       </div>
       <div className="controls">
@@ -416,8 +451,9 @@ export default function App() {
     else if (action === 'next') await client.player.skipNext();
   }
 
-  const showPlayer = showPlayback && (alwaysPlayer || playerState?.playback?.state === 'playing' || Boolean(soundtrackTrack));
-  const displayPlayerState = soundtrackTrack && !playerState?.track
+  const soundtrackConfigured = soundtrackEnabled && Boolean(soundtrackUrl.trim());
+  const showPlayer = showPlayback && (alwaysPlayer || playerState?.playback?.state === 'playing' || Boolean(soundtrackTrack) || soundtrackConfigured);
+  const displayPlayerState = soundtrackTrack
     ? { ...playerState, track: soundtrackTrack, playback: { state: 'playing', positionMs: 0 } }
     : playerState;
 
@@ -429,9 +465,12 @@ export default function App() {
       {showWeather && <aside className="side-column" data-size={weatherSize}>
         <Weather unit={unit} location={location} sharingEnabled={weatherSharingEnabled} onSearch={() => setSearchOpen(true)} />
       </aside>}
-      {showPlayer && <div className="player-slot" data-size={playerSize}><Player state={displayPlayerState} onAction={playbackAction} /></div>}
+      {showPlayer && <div className="player-slot" data-size={playerSize}><Player state={displayPlayerState} onAction={playbackAction} sourceLabel={soundtrackConfigured ? 'Soundtrack' : ''} /></div>}
       {soundtrackError && <p className="dashboard-message" role="status">{soundtrackError}</p>}
-      {searchOpen && <LocationSearch location={location} sharingEnabled={weatherSharingEnabled} onClose={() => setSearchOpen(false)} onSelect={(name) => { setLocation(name); setSearchOpen(false); }} />}
+      {searchOpen && <LocationSearch location={location} sharingEnabled={weatherSharingEnabled} onClose={() => setSearchOpen(false)} onSelect={(place) => {
+        setLocation([place.name, place.admin1, place.country].filter(Boolean).join(', '));
+        setSearchOpen(false);
+      }} />}
     </main>
   );
 }
