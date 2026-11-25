@@ -1,5 +1,10 @@
 # Glass Dashboard
 
+## 0.1.2
+
+- Redraw sunrise and sunset icons as clear, distinct symbols.
+- Align all three screenshots with the dashboard's current layouts and widgets.
+
 ## 0.1.1
 
 - Fix weather requests and add automatic city suggestions while typing.
