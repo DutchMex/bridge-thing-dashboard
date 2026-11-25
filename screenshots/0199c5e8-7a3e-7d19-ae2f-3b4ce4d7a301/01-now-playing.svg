@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480" fill="none">
+  <defs>
+    <linearGradient id="background" x1="20" y1="0" x2="760" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#132943"/>
+      <stop offset=".58" stop-color="#0A1423"/>
+      <stop offset="1" stop-color="#111327"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(240 0 0 190 135 89)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#63A9F6" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#63A9F6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="violet" cx="0" cy="0" r="1" gradientTransform="matrix(220 0 0 175 713 452)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B07DFF" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#B07DFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="glass" x1="80" y1="33" x2="470" y2="329" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity=".055"/>
+    </linearGradient>
+    <linearGradient id="playerGlass" x1="165" y1="350" x2="655" y2="460" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity=".15"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity=".055"/>
+    </linearGradient>
+    <linearGradient id="album" x1="36" y1="354" x2="113" y2="445" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8B77D"/>
+      <stop offset=".5" stop-color="#BC7191"/>
+      <stop offset="1" stop-color="#4B6DAB"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="13"/>
+      <feOffset dy="9"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".28"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <style>
+      text { font-family: Inter, "Segoe UI", Arial, sans-serif; fill: #F7FBFF; }
+      .muted { fill: #D9E7F5; fill-opacity: .64; }
+      .fine { fill: #E5F0FC; fill-opacity: .54; }
+    </style>
+  </defs>
+  <path fill="url(#background)" d="M0 0h800v480H0z"/>
+  <path fill="url(#glow)" d="M0 0h800v480H0z"/>
+  <path fill="url(#violet)" d="M0 0h800v480H0z"/>
+
+  <g filter="url(#shadow)">
+    <rect x="20.5" y="20.5" width="479" height="305" rx="34" fill="url(#glass)" stroke="#FFF" stroke-opacity=".15"/>
+    <rect x="520.5" y="20.5" width="259" height="305" rx="34" fill="url(#glass)" stroke="#FFF" stroke-opacity=".15"/>
+    <rect x="20.5" y="341.5" width="759" height="118" rx="30" fill="url(#playerGlass)" stroke="#FFF" stroke-opacity=".15"/>
+  </g>
+
+  <g text-anchor="middle">
+    <text x="260" y="160" font-size="112" font-weight="600" letter-spacing="-8">09:41</text>
+    <text x="260" y="204" class="muted" font-size="17" letter-spacing="1.7">TUESDAY, NOVEMBER 25</text>
+  </g>
+
+  <g>
+    <path d="M547 54s5-4.4 5-9a5 5 0 1 0-10 0c0 4.6 5 9 5 9Z" stroke="#A7D4FF" stroke-width="1.1"/>
+    <circle cx="547" cy="45" r="1.4" stroke="#A7D4FF" stroke-width="1"/>
+    <text x="559" y="52" font-size="13" font-weight="550">Amsterdam</text>
+    <circle cx="750" cy="47" r="3" fill="#8ED8C0"/>
+    <text x="758" y="50" text-anchor="end" class="fine" font-size="9" letter-spacing="1">NOW</text>
+    <rect x="540" y="77" width="62" height="62" rx="21" fill="#AAD5FF" fill-opacity=".055"/>
+    <svg x="543" y="80" width="56" height="56" viewBox="0 0 64 64" fill="none" stroke="#DCEEFF" stroke-opacity=".9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 48h32a11 11 0 0 0 0-22 15 15 0 0 0-29-2 12 12 0 0 0-3 24Z" fill="#D5EAFF" fill-opacity=".16"/>
+    </svg>
+    <text x="612" y="112" font-size="48" font-weight="590" letter-spacing="-3">1°</text>
+    <text x="654" y="84" class="muted" font-size="13">C</text>
+    <text x="612" y="138" class="muted" font-size="12">Overcast</text>
+    <path d="M540 164h220" stroke="#FFF" stroke-opacity=".12"/>
+    <path d="M547 181v10m-4-6 4-4 4 4" stroke="#A7D4FF" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="561" y="185" class="fine" font-size="9" letter-spacing="1">HIGH</text>
+    <text x="561" y="205" font-size="14" font-weight="560">3°</text>
+    <path d="M663 181v10m-4-4 4 4 4-4" stroke="#A7D4FF" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="677" y="185" class="fine" font-size="9" letter-spacing="1">LOW</text>
+    <text x="677" y="205" font-size="14" font-weight="560">0°</text>
+    <path d="M540 236h15m-15 0a7.5 7.5 0 0 1 15 0m-8-13v5m-6-3 2 2m11-2-2 2" stroke="#A7D4FF" stroke-width="1.1" stroke-linecap="round"/>
+    <text x="561" y="232" class="fine" font-size="9" letter-spacing=".7">SUNRISE</text>
+    <text x="561" y="251" font-size="13" font-weight="550">08:18</text>
+    <path d="M656 236h15m-15 0a7.5 7.5 0 0 1 15 0m-8-13v5m-6-3 2 2m11-2-2 2m-5 8v7m-3-3 3 3 3-3" stroke="#A7D4FF" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="677" y="232" class="fine" font-size="9" letter-spacing=".7">SUNSET</text>
+    <text x="677" y="251" font-size="13" font-weight="550">16:35</text>
+    <path d="M547 282c3-4 6-4 9 0" stroke="#A7D4FF" stroke-width="1.2" stroke-linecap="round"/>
+    <text x="561" y="291" class="fine" font-size="10">82% humidity</text>
+    <text x="760" y="291" text-anchor="end" class="fine" font-size="9">TAP FOR CITY</text>
+  </g>
+
+  <g>
+    <rect x="32" y="357" width="86" height="86" rx="22" fill="url(#album)"/>
+    <text x="75" y="414" text-anchor="middle" font-size="30" fill="#FFF" fill-opacity=".62">♪</text>
+
+    <text x="134" y="390" font-size="20" font-weight="600">Masterpiece</text>
+    <text x="134" y="414" class="muted" font-size="15">Boreal Monkey</text>
+    <rect x="134" y="432" width="410" height="4" rx="2" fill="#FFF" fill-opacity=".12"/>
+  </g>
+
+  <g stroke="#FFF" stroke-opacity=".82" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="614" cy="401" r="22" fill="#FFF" fill-opacity=".055" stroke-opacity=".13"/>
+    <path d="M620 394v14M608 394v14"/>
+    <circle cx="676" cy="401" r="29" fill="#EAF4FF" fill-opacity=".16" stroke-opacity=".22"/>
+    <path d="m669 391 15 10-15 10z" fill="#F7FBFF" stroke="none"/>
+    <circle cx="738" cy="401" r="22" fill="#FFF" fill-opacity=".055" stroke-opacity=".13"/>
+    <path d="M732 394v14M732 401l12-8v16z"/>
+  </g>
+</svg>

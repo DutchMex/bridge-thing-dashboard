@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-11-25T21:56:34.405Z",
+  "updated_at": "2026-11-25T22:01:46.557Z",
   "repo": {
     "name": "Bridge-Thing Dashboard",
     "description": "Custom dashboards for BridgeThing devices.",
@@ -15,6 +15,11 @@
       "description": "A liquid-glass dashboard with clock, weather and playback.",
       "author": "DutchMex",
       "icon": null,
+      "screenshots": [
+        "https://dutchmex.github.io/bridge-thing-dashboard/screenshots/0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301/01-now-playing.svg",
+        "https://dutchmex.github.io/bridge-thing-dashboard/screenshots/0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301/02-weather-focus.svg",
+        "https://dutchmex.github.io/bridge-thing-dashboard/screenshots/0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301/03-city-search.svg"
+      ],
       "categories": [
         "dashboards",
         "clocks-weather"
@@ -22,6 +27,25 @@
       "homepage": "https://github.com/DutchMex/bridge-thing-dashboard",
       "source": "https://github.com/DutchMex/bridge-thing-dashboard",
       "versions": [
+        {
+          "version": "0.1.2",
+          "released_at": "2026-11-25T22:01:46.548Z",
+          "download": {
+            "url": "https://dutchmex.github.io/bridge-thing-dashboard/r/0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301/0.1.2.zip",
+            "size": 467125,
+            "sha256": "bc92792f2a198997b5195aedaa2858bd5bf8c4eb8f53a5c8b4517020d5bd82f1"
+          },
+          "settings": {
+            "url": "https://dutchmex.github.io/bridge-thing-dashboard/s/0199c5e8-7a3e-7d19-ae2f-3b4ce4d7a301/0.1.2.html",
+            "size": 252214,
+            "sha256": "668bfed6b5da287730ff91836394aa1ab1d904dddb0afca05cda1c76b916b8b8"
+          },
+          "permissions": [
+            "net.fetch"
+          ],
+          "min_libbridgething_version": "0.17.0",
+          "changelog": "- Redraw sunrise and sunset icons as clear, distinct symbols.\n- Align all three screenshots with the dashboard's current layouts and widgets."
+        },
         {
           "version": "0.1.1",
           "released_at": "2026-11-25T21:38:43.249Z",

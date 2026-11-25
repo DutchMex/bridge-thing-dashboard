@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480" fill="none">
+  <defs>
+    <linearGradient id="background" x1="20" y1="0" x2="760" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#152943"/>
+      <stop offset=".54" stop-color="#091421"/>
+      <stop offset="1" stop-color="#17152C"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(300 0 0 230 227 131)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#61AFFF" stop-opacity=".25"/>
+      <stop offset="1" stop-color="#61AFFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pink" cx="0" cy="0" r="1" gradientTransform="matrix(185 0 0 160 800 45)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D08CFF" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#D08CFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="glass" x1="80" y1="37" x2="486" y2="330" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#FFF" stop-opacity=".05"/>
+    </linearGradient>
+    <linearGradient id="playerGlass" x1="180" y1="345" x2="680" y2="460" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF" stop-opacity=".15"/>
+      <stop offset="1" stop-color="#FFF" stop-opacity=".05"/>
+    </linearGradient>
+    <linearGradient id="disc" x1="38" y1="357" x2="120" y2="440" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#98B8FF"/>
+      <stop offset=".52" stop-color="#A47DC5"/>
+      <stop offset="1" stop-color="#E9A3AF"/>
+    </linearGradient>
+    <style>
+      text { font-family: Inter, "Segoe UI", Arial, sans-serif; fill: #F7FBFF; }
+      .muted { fill: #D9E7F5; fill-opacity: .64; }
+      .fine { fill: #E5F0FC; fill-opacity: .54; }
+    </style>
+  </defs>
+  <path fill="url(#background)" d="M0 0h800v480H0z"/>
+  <path fill="url(#glow)" d="M0 0h800v480H0z"/>
+  <path fill="url(#pink)" d="M0 0h800v480H0z"/>
+
+  <rect x="20.5" y="20.5" width="483" height="305" rx="34" fill="url(#glass)" stroke="#FFF" stroke-opacity=".15"/>
+  <rect x="520.5" y="20.5" width="259" height="305" rx="34" fill="url(#glass)" stroke="#FFF" stroke-opacity=".15"/>
+  <rect x="20.5" y="341.5" width="759" height="118" rx="30" fill="url(#playerGlass)" stroke="#FFF" stroke-opacity=".15"/>
+
+  <g>
+    <path d="M47 54s5-4.4 5-9a5 5 0 1 0-10 0c0 4.6 5 9 5 9Z" stroke="#A7D4FF" stroke-width="1.1"/>
+    <circle cx="47" cy="45" r="1.4" stroke="#A7D4FF" stroke-width="1"/>
+    <text x="59" y="52" font-size="13" font-weight="550">Amsterdam</text>
+    <circle cx="468" cy="47" r="3" fill="#8ED8C0"/>
+    <text x="480" y="50" text-anchor="end" class="fine" font-size="9" letter-spacing="1">NOW</text>
+    <rect x="40" y="77" width="62" height="62" rx="21" fill="#AAD5FF" fill-opacity=".055"/>
+    <svg x="43" y="80" width="56" height="56" viewBox="0 0 64 64" fill="none" stroke="#DCEEFF" stroke-opacity=".9" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 48h32a11 11 0 0 0 0-22 15 15 0 0 0-29-2 12 12 0 0 0-3 24Z" fill="#D5EAFF" fill-opacity=".16"/>
+    </svg>
+    <text x="112" y="112" font-size="48" font-weight="590" letter-spacing="-3">1°</text>
+    <text x="154" y="84" class="muted" font-size="13">C</text>
+    <text x="112" y="138" class="muted" font-size="12">Overcast</text>
+    <path d="M40 164h444" stroke="#FFF" stroke-opacity=".12"/>
+    <path d="M47 181v10m-4-6 4-4 4 4" stroke="#A7D4FF" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="61" y="185" class="fine" font-size="9" letter-spacing="1">HIGH</text>
+    <text x="61" y="205" font-size="14" font-weight="560">3°</text>
+    <path d="M275 181v10m-4-4 4 4 4-4" stroke="#A7D4FF" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="289" y="185" class="fine" font-size="9" letter-spacing="1">LOW</text>
+    <text x="289" y="205" font-size="14" font-weight="560">0°</text>
+    <path d="M40 236h15m-15 0a7.5 7.5 0 0 1 15 0m-8-13v5m-6-3 2 2m11-2-2 2" stroke="#A7D4FF" stroke-width="1.1" stroke-linecap="round"/>
+    <text x="61" y="232" class="fine" font-size="9" letter-spacing=".7">SUNRISE</text>
+    <text x="61" y="251" font-size="13" font-weight="550">08:18</text>
+    <path d="M275 236h15m-15 0a7.5 7.5 0 0 1 15 0m-8-13v5m-6-3 2 2m11-2-2 2m-5 8v7m-3-3 3 3 3-3" stroke="#A7D4FF" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="296" y="232" class="fine" font-size="9" letter-spacing=".7">SUNSET</text>
+    <text x="296" y="251" font-size="13" font-weight="550">16:35</text>
+    <text x="40" y="291" class="fine" font-size="10">82% humidity</text>
+    <text x="484" y="291" text-anchor="end" class="fine" font-size="10">Tap to change city</text>
+  </g>
+
+  <defs>
+    <line id="major-tick" x1="110" y1="11" x2="110" y2="25" stroke="#FFF" stroke-opacity=".82" stroke-width="3"/>
+    <line id="minor-tick" x1="110" y1="17" x2="110" y2="22" stroke="#FFF" stroke-opacity=".42" stroke-width="1"/>
+  </defs>
+  <g transform="translate(515 37) scale(1.23)">
+    <use href="#major-tick" transform="rotate(0 110 110)"/>
+    <use href="#major-tick" transform="rotate(30 110 110)"/>
+    <use href="#major-tick" transform="rotate(60 110 110)"/>
+    <use href="#major-tick" transform="rotate(90 110 110)"/>
+    <use href="#major-tick" transform="rotate(120 110 110)"/>
+    <use href="#major-tick" transform="rotate(150 110 110)"/>
+    <use href="#major-tick" transform="rotate(180 110 110)"/>
+    <use href="#major-tick" transform="rotate(210 110 110)"/>
+    <use href="#major-tick" transform="rotate(240 110 110)"/>
+    <use href="#major-tick" transform="rotate(270 110 110)"/>
+    <use href="#major-tick" transform="rotate(300 110 110)"/>
+    <use href="#major-tick" transform="rotate(330 110 110)"/>
+    <use href="#minor-tick" transform="rotate(15 110 110)"/>
+    <use href="#minor-tick" transform="rotate(45 110 110)"/>
+    <use href="#minor-tick" transform="rotate(75 110 110)"/>
+    <use href="#minor-tick" transform="rotate(105 110 110)"/>
+    <use href="#minor-tick" transform="rotate(135 110 110)"/>
+    <use href="#minor-tick" transform="rotate(165 110 110)"/>
+    <use href="#minor-tick" transform="rotate(195 110 110)"/>
+    <use href="#minor-tick" transform="rotate(225 110 110)"/>
+    <use href="#minor-tick" transform="rotate(255 110 110)"/>
+    <use href="#minor-tick" transform="rotate(285 110 110)"/>
+    <use href="#minor-tick" transform="rotate(315 110 110)"/>
+    <use href="#minor-tick" transform="rotate(345 110 110)"/>
+    <line x1="110" y1="110" x2="110" y2="58" transform="rotate(290.5 110 110)" stroke="#EEF7FF" stroke-width="9" stroke-linecap="round"/>
+    <line x1="110" y1="110" x2="110" y2="38" transform="rotate(246 110 110)" stroke="#EEF7FF" stroke-width="6" stroke-linecap="round"/>
+    <line x1="110" y1="126" x2="110" y2="28" transform="rotate(48 110 110)" stroke="#85C9FF" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="110" cy="110" r="5" fill="#85C9FF"/>
+  </g>
+
+  <rect x="32" y="357" width="86" height="86" rx="22" fill="url(#disc)"/>
+  <text x="75" y="414" text-anchor="middle" font-size="30" fill="#FFF" fill-opacity=".62">♪</text>
+
+  <text x="134" y="390" font-size="20" font-weight="600">Masterpiece</text>
+  <text x="134" y="414" class="muted" font-size="15">Boreal Monkey</text>
+  <rect x="134" y="432" width="410" height="4" rx="2" fill="#FFF" fill-opacity=".12"/>
+
+  <g stroke="#FFF" stroke-opacity=".82" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="614" cy="401" r="22" fill="#FFF" fill-opacity=".055" stroke-opacity=".13"/>
+    <path d="M620 394v14M608 394v14"/>
+    <circle cx="676" cy="401" r="29" fill="#EAF4FF" fill-opacity=".16" stroke-opacity=".22"/>
+    <path d="m669 391 15 10-15 10z" fill="#F7FBFF" stroke="none"/>
+    <circle cx="738" cy="401" r="22" fill="#FFF" fill-opacity=".055" stroke-opacity=".13"/>
+    <path d="M732 394v14M732 401l12-8v16z"/>
+  </g>
+</svg>
