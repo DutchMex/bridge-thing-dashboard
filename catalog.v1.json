@@ -1,7 +1,7 @@
 {
   "$schema": "https://apps.bridgething.com/schemas/catalog/v1.json",
   "schema": "catalog.v1",
-  "updated_at": "2026-11-25T20:05:41.862Z",
+  "updated_at": "2026-11-25T21:26:51.616Z",
   "repo": {
     "name": "Bridge-Thing Dashboard",
     "description": "Custom dashboards for BridgeThing devices.",
@@ -31,8 +31,7 @@
             "sha256": "671eb8abc278d536cfdde615c1f67dba898056670abaa60e680a5e03d8bdac03"
           },
           "permissions": [
-            "net.fetch",
-            "geo"
+            "net.fetch"
           ],
           "min_libbridgething_version": "0.17.0",
           "changelog": "Initial release."
