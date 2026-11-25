@@ -41,6 +41,25 @@
     {
       "type": "enum",
       "data": {
+        "key": "fuzzyClockPrecision",
+        "label": "Fuzzy clock precision",
+        "description": "Choose how broadly the fuzzy clock describes the time",
+        "choices": [
+          "daypart",
+          "quarter-hour",
+          "five-minute"
+        ],
+        "choiceLabels": {
+          "daypart": "Very fuzzy (morning, afternoon)",
+          "quarter-hour": "Fuzzy (quarter hours)",
+          "five-minute": "Less fuzzy (5-minute phrases)"
+        },
+        "default": "daypart"
+      }
+    },
+    {
+      "type": "enum",
+      "data": {
         "key": "backgroundTheme",
         "label": "Background theme",
         "description": "Choose a gradient or solid dashboard background",

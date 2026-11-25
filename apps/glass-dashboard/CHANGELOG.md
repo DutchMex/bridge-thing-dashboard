@@ -1,5 +1,9 @@
 # Glass Dashboard
 
+## Unreleased
+
+- Add a configurable precision level for the fuzzy clock, from dayparts to five-minute phrases.
+
 ## 0.1.5
 
 - Refine weather and Soundtrack layouts across dashboard sizes.
